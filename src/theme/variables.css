@@ -1,7 +1,13 @@
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
+
 /** Ionic CSS Variables **/
+
+*{
+  font-family: "Segoe UI";
+}
+
 :root {
   /** primary **/
   --ion-color-primary: #3880ff;
