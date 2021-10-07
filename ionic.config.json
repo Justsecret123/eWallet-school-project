@@ -1,0 +1,7 @@
+{
+  "name": "eWallet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
