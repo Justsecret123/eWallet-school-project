@@ -17,7 +17,7 @@ const ExpensesTab: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <ExploreContainer name="Tab 2 page" />
-        <h1>Ajouter une nouvelle dépense</h1>
+        
       </IonContent>
     </IonPage>
   );
