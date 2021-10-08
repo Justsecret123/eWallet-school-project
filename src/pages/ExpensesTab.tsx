@@ -17,7 +17,7 @@ const ExpensesTab: React.FC = () => {
         
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Expenses</IonTitle>
+            <IonTitle size="large">Expenses manager</IonTitle>
           </IonToolbar>
         </IonHeader>
 
@@ -41,8 +41,7 @@ const ExpensesTab: React.FC = () => {
           </IonItem>
 
           <IonButton expand="block" className="custom-button"> 
-            Add
-            <IonIcon icon={addCircle}></IonIcon>
+            Add <IonIcon icon={addCircle}></IonIcon>
           </IonButton>
 
         </div>
