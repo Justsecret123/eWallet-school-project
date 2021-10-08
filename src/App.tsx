@@ -9,9 +9,8 @@ import {
   IonTabs,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { wallet, card, triangle, list } from 'ionicons/icons';
+import { wallet, card, list } from 'ionicons/icons';
 import SalaryTab from './pages/SalaryTab';
-import ExepensesTab from './pages/ExpensesTab';
 import HistoryTab from './pages/HistoryTab';
 
 /* Core CSS required for Ionic components to work properly */
