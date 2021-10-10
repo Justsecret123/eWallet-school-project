@@ -6,40 +6,45 @@ import { useState } from "react";
 
 const currencies = currency_list;
 
-const compareWith = (o1:any, o2:any) => {
-    return o1 && o2 ? o1.code === o2.code : o1 === o2;
-}
-
 const SettingsTab: React.FC = () => {
 
-    const [username, setUsername] = useState("Ibrahim Serouis");
-    const [currency, setCurrency] = useState("MAD");
+    const [username, setUsername] = useState<string>("Ibrahim Serouis");
+    const [currency, setCurrency] = useState<string>("MAD");
 
-    const [selectedCurrency, setSelectedCurrency] = useState(currency);
+    const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
+    const [modifiedUsername, setModifiedUsername] = useState<string>(username);
 
+    const ConfirmChanges = () => {
+        if(modifiedUsername == ""){
+            setCurrency(selectedCurrency);
+        }else{
+            setUsername(modifiedUsername)
+            setCurrency(selectedCurrency);
+        }
+    }
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Settings {currency}</IonTitle>
+                    <IonTitle>Settings</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
                 <IonHeader collapse="condense">
                     <IonToolbar>
-                        <IonTitle size="large">Settings {currency} </IonTitle>
+                        <IonTitle size="large">Settings</IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 
                 <div className="main-app">
                     <IonItem>
                         <IonLabel position="stacked" className="labels">Change username</IonLabel>
-                        <IonInput type="text" placeholder="Username..."></IonInput>
+                        <IonInput type="text" placeholder={username + "..."}  onIonChange={e => setModifiedUsername(e.detail.value!)} minlength={4}></IonInput>
                     </IonItem>
                     <IonItem>
                         <IonLabel position="stacked" className="labels">Change currency</IonLabel>
-                        <IonSelect onIonChange = {e => setSelectedCurrency(e.detail.value)}>
+                        <IonSelect onIonChange = {e => setSelectedCurrency(e.detail.value)} value={selectedCurrency}>
                             {
                                 currencies.map(currency => (
                                     <IonSelectOption key={currency.code} value={currency.code}>
@@ -49,7 +54,7 @@ const SettingsTab: React.FC = () => {
                             }
                         </IonSelect>
                     </IonItem>
-                    <IonButton expand="block" className="custom-button" onClick={()=>{setCurrency(selectedCurrency)}}>
+                    <IonButton expand="block" className="custom-button" onClick={()=>{ConfirmChanges()}}>
                         Confirm
                         <IonIcon icon={checkmarkCircle}/>
                     </IonButton>
