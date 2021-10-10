@@ -9,9 +9,10 @@ import {
   IonTabs,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { wallet, card, list } from 'ionicons/icons';
+import { wallet, card, list, settings } from 'ionicons/icons';
 import SalaryTab from './pages/SalaryTab';
 import HistoryTab from './pages/HistoryTab';
+import SettingsTab from "./pages/SettingsTab";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -47,6 +48,9 @@ const App: React.FC = () => (
           <Route path="/tab3">
             <HistoryTab />
           </Route>
+          <Route exact path="/tab4">
+            <SettingsTab />
+          </Route>
           <Route exact path="/">
             <Redirect to="/tab1" />
           </Route>
@@ -63,6 +67,10 @@ const App: React.FC = () => (
           <IonTabButton tab="tab3" href="/tab3">
             <IonIcon icon={list} />
             <IonLabel>History</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="tab4" href="/tab4">
+            <IonIcon icon={settings}/>
+            <IonLabel>Settings</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
