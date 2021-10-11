@@ -2,7 +2,8 @@ import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel,
 import {checkmarkCircle} from "ionicons/icons";
 import "./settings.css";
 import { currency_list } from "../currencies";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Database, Storage } from "@ionic/storage";
 
 const currencies = currency_list;
 
@@ -14,11 +15,18 @@ const SettingsTab: React.FC = () => {
     const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
     const [modifiedUsername, setModifiedUsername] = useState<string>(username);
 
+    const [db, setDb] = useState<Database | null>(null);
+
+    useEffect(() => {
+    });
+
     const ConfirmChanges = () => {
         if(modifiedUsername == ""){
             setCurrency(selectedCurrency);
         }else{
-            setUsername(modifiedUsername)
+            //Modify username
+            setUsername(modifiedUsername);
+
             setCurrency(selectedCurrency);
         }
     }
