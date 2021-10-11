@@ -1,11 +1,30 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { IonDatetime } from '@ionic/react';
 import { addCircle } from 'ionicons/icons';
+import { useState } from 'react';
 import './salary.css';
 
-const date = new Date();
+const today = new Date();
 
 const SalaryTab: React.FC = () => {
+
+  const [balance, setBalance] = useState<number>(5000);
+  const [salaryList, setSalaryList] = useState<any>([]);
+
+  const [amount, setAmount] = useState<number>(0);
+  const [date, setDate] = useState<Date>();
+
+  const addSalary = () => {
+
+    if(amount>0 && typeof(date)!=="undefined"){
+      const newSalary:any = { "salary": amount, "date": date.toLocaleDateString() };
+      salaryList.push(newSalary);
+      console.log("Salary list: ", salaryList);
+    }
+    
+  };
+
+
   return (
     <IonPage>
       <IonHeader>
@@ -24,13 +43,13 @@ const SalaryTab: React.FC = () => {
 
           <IonItem>
             <IonLabel position="stacked" className="labels">Amount</IonLabel>
-            <IonInput type="number" placeholder="Amount..." required></IonInput>
+            <IonInput type="number" placeholder="Amount..." onIonChange={e => setAmount(parseFloat(e.detail.value!))} required></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Payday</IonLabel>
-            <IonDatetime value={date.toString()}></IonDatetime>
+            <IonDatetime placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
           </IonItem>
-          <IonButton expand="block"> Add salary <IonIcon icon={addCircle}></IonIcon> </IonButton>
+          <IonButton expand="block" onClick={e => addSalary()}> Add salary <IonIcon icon={addCircle}></IonIcon> </IonButton>
 
         </div>
         
