@@ -17,9 +17,12 @@ const SalaryTab: React.FC = () => {
   const addSalary = () => {
 
     if(amount>0 && typeof(date)!=="undefined"){
-      const newSalary:any = { "salary": amount, "date": date.toLocaleDateString() };
-      salaryList.push(newSalary);
-      console.log("Salary list: ", salaryList);
+      const newSalary:any = {"salary": amount, "date": date.toLocaleDateString()};
+      const newSalaryList:any = [...salaryList];
+      newSalaryList.push(newSalary);
+      setSalaryList(newSalaryList);
+
+      console.log("Salary list: ", newSalaryList);
     }
     
   };
