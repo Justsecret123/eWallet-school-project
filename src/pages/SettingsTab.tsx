@@ -6,6 +6,14 @@ import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
 
 const currencies = currency_list;
+const store = new Storage();
+
+var database:any = null;
+
+store.create().then(function(result){
+    database = result;
+    console.log("Database: " , database);
+});
 
 const SettingsTab: React.FC = () => {
 
@@ -15,19 +23,43 @@ const SettingsTab: React.FC = () => {
     const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
     const [modifiedUsername, setModifiedUsername] = useState<string>(username);
 
-    const [db, setDb] = useState<Database | null>(null);
+    const [db, setDb] = useState<Database | null>(database);
 
     useEffect(() => {
+        
+        async function getUser(){
+            const val = await db.get("username");
+            if(val!==null){
+                setUsername(val);
+            }else{
+                setUsername("username");
+            }
+        }
+
+        async function getCurrency(){
+            const val = await db.get("currency");
+            if(val!==null){
+                setCurrency(val);
+            }else{
+                setCurrency("MAD");
+            }
+        }
+
+        getUser();
+        getCurrency();
+
     });
 
     const ConfirmChanges = () => {
         if(modifiedUsername == ""){
             setCurrency(selectedCurrency);
         }else{
-            //Modify username
-            setUsername(modifiedUsername);
 
+            setUsername(modifiedUsername);
             setCurrency(selectedCurrency);
+
+            db.set("username",modifiedUsername);
+            db.set("currency", selectedCurrency);
         }
     }
 
@@ -52,7 +84,7 @@ const SettingsTab: React.FC = () => {
                     </IonItem>
                     <IonItem>
                         <IonLabel position="stacked" className="labels">Change currency</IonLabel>
-                        <IonSelect onIonChange = {e => setSelectedCurrency(e.detail.value)} value={selectedCurrency}>
+                        <IonSelect onIonChange = {e => setSelectedCurrency(e.detail.value)} placeholder={currency}>
                             {
                                 currencies.map(currency => (
                                     <IonSelectOption key={currency.code} value={currency.code}>
