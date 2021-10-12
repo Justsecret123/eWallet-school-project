@@ -67,8 +67,8 @@ const ExpensesTab: React.FC = () => {
             <IonInput placeholder="Keyword, Keyword..." onIonChange={e => setKeywords(e.detail.value!)} spellcheck={true} autoCorrect="on"></IonInput>
           </IonItem>
 
-          <IonButton expand="block" className="custom-button" onClick={e => addExpense() }> 
-            Add <IonIcon icon={addCircle}></IonIcon>
+          <IonButton expand="block" className="custom-button" mode="ios" onClick={e => addExpense() }> 
+            ADD <IonIcon icon={addCircle}></IonIcon>
           </IonButton>
 
         </div>
