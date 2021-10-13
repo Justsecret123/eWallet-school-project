@@ -12,12 +12,11 @@ var database:any = null;
 
 store.create().then(function(result){
     database = result;
-    console.log("Database: " , database);
 });
 
 const SettingsTab: React.FC = () => {
 
-    const [username, setUsername] = useState<string>("Ibrahim Serouis");
+    const [username, setUsername] = useState<string>("");
     const [currency, setCurrency] = useState<string>("MAD");
 
     const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
@@ -33,7 +32,7 @@ const SettingsTab: React.FC = () => {
             if(val!==null){
                 setUsername(val);
             }else{
-                setUsername("username");
+                setUsername("");
             }
         }
 

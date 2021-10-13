@@ -13,7 +13,6 @@ var database:any = null;
 
 store.create().then(function(result){
   database = result;
-  console.log("Database: ", database);
 });
 
 
@@ -66,18 +65,14 @@ const ExpensesTab: React.FC = () => {
     routerHistory.push("/expensesHist");
   }
 
-  const redirectToAdd = () => {
-    routerHistory.push("/tab2");
-  }
-
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Add an expense</IonTitle>
+          <IonTitle>Expenses manager</IonTitle>
         </IonToolbar>
         <IonSegment scrollable={true} mode="ios">
-            <IonSegmentButton onClick={()=> redirectToAdd()}>
+            <IonSegmentButton disabled={true}>
               <IonLabel>Add an expense</IonLabel>
             </IonSegmentButton>
             <IonSegmentButton onClick={()=> redirectToHistory()}>
@@ -90,7 +85,7 @@ const ExpensesTab: React.FC = () => {
         
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Add an expense</IonTitle>
+            <IonTitle size="large">Expenses manager</IonTitle>
           </IonToolbar>
         </IonHeader>
 

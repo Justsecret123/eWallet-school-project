@@ -34,6 +34,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import SalaryHistTab from './pages/SalaryHistTab';
 
 
 
@@ -58,6 +59,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/expensesHist">
             <ExpensesHistTab />
+          </Route>
+          <Route exact path="/salaryHist">
+            <SalaryHistTab/>
           </Route>
           <Route exact path="/">
             <Redirect to="/tab1" />

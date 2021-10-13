@@ -1,16 +1,16 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { IonDatetime } from '@ionic/react';
 import { addCircle } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import './salary.css';
+import { useHistory } from 'react-router';
 
 const store = new Storage();
 var database:any = null; 
 
 store.create().then(function(result){
   database = result;
-  console.log("Database: ", database);
 })
 
 const today = new Date();
@@ -24,6 +24,8 @@ const SalaryTab: React.FC = () => {
   const [date, setDate] = useState<Date>();
 
   const [db, setDb] = useState<Database | null>(database);
+
+  const routerHistory = useHistory();
 
   useEffect(()=>{
     getSalaryListFromDB();
@@ -57,8 +59,9 @@ const SalaryTab: React.FC = () => {
     
   };
 
-
-
+  const redirectToHistory = () => {
+    routerHistory.push("/salaryHist");
+  }
 
   return (
     <IonPage>
@@ -66,6 +69,14 @@ const SalaryTab: React.FC = () => {
         <IonToolbar>
           <IonTitle>Salary management</IonTitle>
         </IonToolbar>
+        <IonSegment scrollable={true} mode="ios">
+            <IonSegmentButton disabled={true}>
+              <IonLabel>Add a salary</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton onClick={()=> redirectToHistory()}>
+              <IonLabel>History</IonLabel>
+            </IonSegmentButton>
+        </IonSegment>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
@@ -78,7 +89,7 @@ const SalaryTab: React.FC = () => {
 
           <IonItem>
             <IonLabel position="stacked" className="labels">Amount</IonLabel>
-            <IonInput type="number" placeholder="Amount..." onIonChange={e => setAmount(parseFloat(e.detail.value!))} required></IonInput>
+            <IonInput mode="ios" type="number" placeholder="Amount..." onIonChange={e => setAmount(parseFloat(e.detail.value!))} required></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Payday</IonLabel>

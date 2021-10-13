@@ -9,3 +9,7 @@
 ion-badge {
     margin-left: 15px!important;
 }
+
+ion-card {
+    width: 100%!important;
+}

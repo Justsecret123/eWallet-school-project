@@ -12,7 +12,6 @@ var database:any = null;
 
 store.create().then(function(result){
   database = result;
-  console.log("Database: ", database);
 });
 
 const ExpensesHistTab: React.FC = () => {
@@ -97,7 +96,7 @@ const ExpensesHistTab: React.FC = () => {
         </IonHeader>
 
         <div className="main-app">
-            <IonList>
+            <IonList mode="ios" lines="none">
             {
                 expenseList.map((expense:any, index:any)=>(
                     <IonItemSliding key={index}>
@@ -113,7 +112,7 @@ const ExpensesHistTab: React.FC = () => {
                             </IonCardHeader>
                             <IonCardContent>
                               <IonText>{expense.amount + " " + currency}</IonText>
-                              <IonBadge color={setColor(expense.category)}>{expense.category}</IonBadge>
+                              <IonBadge color={setColor(expense.category)} mode="ios">{expense.category}</IonBadge>
                             </IonCardContent>
                           </IonCard>
                         </IonItem>
