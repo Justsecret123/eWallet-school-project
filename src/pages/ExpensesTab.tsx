@@ -100,7 +100,7 @@ const ExpensesTab: React.FC = () => {
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Category</IonLabel>
-            <IonSelect placeholder="Select a category" onIonChange={e => setCategory(e.detail.value!)}>
+            <IonSelect mode="ios" placeholder="Select a category" onIonChange={e => setCategory(e.detail.value!)}>
               <IonSelectOption value="Housing">Housing</IonSelectOption>
               <IonSelectOption value="Food">Food</IonSelectOption>
               <IonSelectOption value="Bills">Bills</IonSelectOption>

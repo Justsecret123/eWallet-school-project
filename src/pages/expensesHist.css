@@ -13,3 +13,7 @@ ion-badge {
 ion-card {
     width: 100%!important;
 }
+
+ion-segment, ion-segment * {
+    color-scheme: dark!important;
+}

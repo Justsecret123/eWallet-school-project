@@ -29,10 +29,7 @@ ion-title {
     padding-left: 5px;
 }
 
-.main-app {
-    position: absolute;
-    width: 90%;
-    height: inherit;
-    top: 20%;
-    left: 5%;
+
+ion-segment, ion-segment * {
+    color-scheme: dark!important;
 }

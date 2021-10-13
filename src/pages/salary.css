@@ -8,3 +8,23 @@
 .custom-button ion-icon {
     padding-left: 5px;
 }
+
+ion-content {
+    padding: 5%!important;
+}
+
+ion-segment, ion-segment ion-segment-button ion-label {
+    color-scheme: dark!important;
+}
+
+ion-segment ion-segment-button ion-label {
+    color: white!important;
+}
+
+.main-app {
+    position: relative!important;
+    width: 90%;
+    height: inherit;
+    top: 0.0625%!important;
+    left: 5%;
+}
