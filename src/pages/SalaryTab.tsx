@@ -93,7 +93,7 @@ const SalaryTab: React.FC = () => {
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Payday</IonLabel>
-            <IonDatetime placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
+            <IonDatetime mode="ios" placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
           </IonItem>
           <IonButton expand="block" shape="round" className="custom-button" mode="ios" onClick={e => addSalary()}> Add salary <IonIcon icon={addCircle}></IonIcon> </IonButton>
 

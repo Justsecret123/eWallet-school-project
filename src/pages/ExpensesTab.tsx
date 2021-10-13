@@ -96,7 +96,7 @@ const ExpensesTab: React.FC = () => {
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Date</IonLabel>
-            <IonDatetime placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
+            <IonDatetime mode="ios" placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Category</IonLabel>

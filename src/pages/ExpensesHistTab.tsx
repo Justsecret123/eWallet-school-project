@@ -27,25 +27,21 @@ const ExpensesHistTab: React.FC = () => {
         getExpenseListFromDB();
         getCurrencyFromDB();
     });
-
-    const redirectToHistory = () => {
-        routerHistory.push("/expensesHist");
-      }
     
-      const redirectToAdd = () => {
+    const redirectToAdd = () => {
         routerHistory.push("/tab2");
-      }
+    }
 
-      const getExpenseListFromDB = async() => {
+    const getExpenseListFromDB = async() => {
         const val = await db.get("expenses");
         if(val!==null){
           setExpenseList(val);
         }else{
           setExpenseList([]);
         }
-      }
+    }
 
-      const getCurrencyFromDB = async() => {
+    const getCurrencyFromDB = async() => {
         const val = await db.get("currency");
         if(val!==null){
             setCurrency(val);
@@ -78,7 +74,7 @@ const ExpensesHistTab: React.FC = () => {
             <IonTitle>Expenses history</IonTitle>
             </IonToolbar>
             <IonSegment mode="ios">
-                <IonSegmentButton onClick={()=> redirectToHistory()}>
+                <IonSegmentButton disabled={true}>
                     <IonLabel>History</IonLabel>
                 </IonSegmentButton>                
                 <IonSegmentButton onClick={()=> redirectToAdd()}>
