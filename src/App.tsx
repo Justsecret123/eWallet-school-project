@@ -14,6 +14,7 @@ import SalaryTab from './pages/SalaryTab';
 import HistoryTab from './pages/HistoryTab';
 import SettingsTab from "./pages/SettingsTab";
 import ExpensesTab from './pages/ExpensesTab';
+import ExpensesHistTab from './pages/ExpensesHistTab';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -54,6 +55,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/tab4">
             <SettingsTab />
+          </Route>
+          <Route exact path="/expensesHist">
+            <ExpensesHistTab />
           </Route>
           <Route exact path="/">
             <Redirect to="/tab1" />

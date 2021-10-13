@@ -37,6 +37,7 @@ const SalaryTab: React.FC = () => {
       setSalaryList([]);
     }
   }
+  
 
   const addSalaryToDB = (newSalaryList:any) => {
     db.set("salaries",newSalaryList);

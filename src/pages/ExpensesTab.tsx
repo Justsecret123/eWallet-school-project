@@ -1,11 +1,11 @@
-import { IonContent, IonDatetime, IonHeader, IonIcon, IonItemOptions, IonItemSliding, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonDatetime, IonHeader, IonIcon, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
 import { IonSelect, IonSelectOption, IonButton } from '@ionic/react';
-import { addCircle, storefrontSharp } from "ionicons/icons";
+import { addCircle } from "ionicons/icons";
 import { useEffect, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
+import { useHistory } from "react-router";
 import './expenses.css';
-import { randomInt } from 'crypto';
 
 const store = new Storage(); 
 
@@ -29,6 +29,7 @@ const ExpensesTab: React.FC = () => {
   const [keywords, setKeywords] = useState<any>();
 
   const[db, setDb] = useState<Database | null>(database);
+  const routerHistory = useHistory();
 
   useEffect(()=>{
     getExpenseListFromDB();
@@ -61,24 +62,39 @@ const ExpensesTab: React.FC = () => {
     }
   }
 
+  const redirectToHistory = () => {
+    routerHistory.push("/expensesHist");
+  }
+
+  const redirectToAdd = () => {
+    routerHistory.push("/tab2");
+  }
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Manage your expenses</IonTitle>
+          <IonTitle>Add an expense</IonTitle>
         </IonToolbar>
+        <IonSegment scrollable={true} mode="ios">
+            <IonSegmentButton onClick={()=> redirectToAdd()}>
+              <IonLabel>Add an expense</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton onClick={()=> redirectToHistory()}>
+              <IonLabel>History</IonLabel>
+            </IonSegmentButton>
+        </IonSegment>
       </IonHeader>
 
       <IonContent fullscreen>
         
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Expenses manager</IonTitle>
+            <IonTitle size="large">Add an expense</IonTitle>
           </IonToolbar>
         </IonHeader>
 
         <div className="main-app">
-
           <IonItem>
             <IonLabel position="stacked" className="labels">Amount</IonLabel>
             <IonInput type="number" placeholder="Value..." onIonChange={e => setAmount(parseFloat(e.detail.value!))} required></IonInput>
@@ -92,7 +108,9 @@ const ExpensesTab: React.FC = () => {
             <IonSelect placeholder="Select a category" onIonChange={e => setCategory(e.detail.value!)}>
               <IonSelectOption value="Housing">Housing</IonSelectOption>
               <IonSelectOption value="Food">Food</IonSelectOption>
+              <IonSelectOption value="Bills">Bills</IonSelectOption>
               <IonSelectOption value="Clothes">Clothes</IonSelectOption>
+              <IonSelectOption value="Extra">Extra</IonSelectOption>
             </IonSelect>
           </IonItem>
           <IonItem>
