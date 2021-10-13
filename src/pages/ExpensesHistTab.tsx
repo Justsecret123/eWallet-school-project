@@ -1,11 +1,10 @@
 import { IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar } from '@ionic/react';
-import { IonInput, IonItem, IonLabel } from '@ionic/react';
-import { IonSelect, IonSelectOption, IonButton } from '@ionic/react';
-import { addCircle } from "ionicons/icons";
+import { IonItem, IonLabel } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
-import './expensesHist.css';
 import { useHistory } from 'react-router';
+import './expensesHist.css';
+
 
 const store = new Storage(); 
 
