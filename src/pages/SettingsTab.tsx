@@ -94,7 +94,7 @@ const SettingsTab: React.FC = () => {
                             }
                         </IonSelect>
                     </IonItem>
-                    <IonButton expand="block" className="custom-button" mode="ios" onClick={()=>{ConfirmChanges()}}>
+                    <IonButton expand="block" className="custom-button" shape="round" mode="ios" onClick={()=>{ConfirmChanges()}}>
                         Confirm
                         <IonIcon icon={checkmarkCircle}/>
                     </IonButton>
