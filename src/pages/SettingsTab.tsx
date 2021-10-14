@@ -17,7 +17,7 @@ store.create().then(function(result){
 const SettingsTab: React.FC = () => {
 
     const [username, setUsername] = useState<string>("");
-    const [currency, setCurrency] = useState<string>("MAD");
+    const [currency, setCurrency] = useState<string>("");
 
     const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
     const [modifiedUsername, setModifiedUsername] = useState<string>(username);
@@ -42,7 +42,7 @@ const SettingsTab: React.FC = () => {
             if(val!==null){
                 setCurrency(val);
             }else{
-                setCurrency("MAD");
+                setCurrency("");
             }
         }
 
@@ -52,8 +52,18 @@ const SettingsTab: React.FC = () => {
     });
 
     const ConfirmChanges = () => {
-        if(modifiedUsername == ""){
+        if(modifiedUsername == "" && selectedCurrency!==""){
+
             setCurrency(selectedCurrency);
+            db.set("currency",selectedCurrency);
+            document.getElementById("currency")?.setAttribute("value","");
+
+        }else if(selectedCurrency=="" && modifiedUsername!==""){
+
+            setUsername(modifiedUsername);
+            db.set("username",modifiedUsername);
+            document.getElementById("username")?.setAttribute("value","");
+
         }else{
 
             setUsername(modifiedUsername);
