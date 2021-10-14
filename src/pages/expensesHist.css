@@ -17,3 +17,8 @@ ion-card {
 ion-segment, ion-segment * {
     color-scheme: dark!important;
 }
+
+ion-card-content div ion-select {
+    width: 98%!important;
+    padding-right: 5px;
+}

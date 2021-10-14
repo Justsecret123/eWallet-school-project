@@ -1,9 +1,9 @@
-import { IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { IonItem, IonLabel } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
-import { trash } from 'ionicons/icons';
+import { checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
 import './expensesHist.css';
 
 
@@ -66,6 +66,14 @@ const ExpensesHistTab: React.FC = () => {
 
     }
 
+    const toggleModifiersVisibility = (idx:string) => {
+      let index:any = document.getElementById(idx);
+      if(index!==null){
+          index.classList.toggle("ion-hide");
+          document.getElementById("button-"+idx)?.classList.toggle("ion-hide");
+      }       
+   }
+
 
 
     const setColor = (category:string) => {
@@ -124,8 +132,25 @@ const ExpensesHistTab: React.FC = () => {
                               <IonCardSubtitle>{expense.date.toLocaleDateString()}</IonCardSubtitle>
                             </IonCardHeader>
                             <IonCardContent>
-                              <IonText>{expense.amount + " " + currency}</IonText>
-                              <IonBadge color={setColor(expense.category)} mode="ios">{expense.category}</IonBadge>
+                              <IonText>{expense.amount + " " + currency}</IonText> 
+                              <IonBadge color={setColor(expense.category)} mode="ios">{expense.category}</IonBadge> <br/> <br/>
+                              <IonButton color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}>Edit <IonIcon icon={create}/></IonButton>
+                              <div className="ion-hide" id={index}>
+                                <IonLabel position="stacked">Modify date: </IonLabel>
+                                <IonDatetime placeholder={expense.date.toLocaleDateString()}></IonDatetime>
+                                <IonLabel position="stacked">Modify amount: </IonLabel>
+                                <IonInput type="number" placeholder={expense.amount}></IonInput>
+                                <IonLabel position="stacked">Category</IonLabel>
+                                <IonSelect mode="ios" placeholder="Select a category">
+                                  <IonSelectOption value="Housing">Housing</IonSelectOption>
+                                  <IonSelectOption value="Food">Food</IonSelectOption>
+                                  <IonSelectOption value="Bills">Bills</IonSelectOption>
+                                  <IonSelectOption value="Clothes">Clothes</IonSelectOption>
+                                  <IonSelectOption value="Extra">Extra</IonSelectOption>
+                              </IonSelect>
+                              <IonButton  color="secondary">Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
+                              <IonButton color="danger" onClick={()=>toggleModifiersVisibility(index)}>Close <IonIcon icon={closeCircle}/></IonButton>
+                              </div>
                             </IonCardContent>
                           </IonCard>
                         </IonItem>

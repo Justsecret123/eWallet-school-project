@@ -23,7 +23,6 @@ const SalaryHistTab: React.FC = () => {
     const [currency, setCurrency] = useState<string>("MAD");
 
     const routerHistory = useHistory();
-    const [modifiersHidden, setModifiersHidden] = useState<boolean>(true);
 
     const ionList:any = useRef();
 
@@ -72,7 +71,6 @@ const SalaryHistTab: React.FC = () => {
            index.classList.toggle("ion-hide");
            document.getElementById("button-"+idx)?.classList.toggle("ion-hide");
        }       
-       setModifiersHidden(true);
     }
     
 
