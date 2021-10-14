@@ -1,3 +1,7 @@
 ion-segment, ion-segment * {
     color-scheme: dark!important;
 }
+
+ion-card-title ion-icon {
+    padding-right: 5px!important;
+}

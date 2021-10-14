@@ -1,8 +1,9 @@
 import { IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { IonItem, IonLabel } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
+import { trash } from 'ionicons/icons';
 import './expensesHist.css';
 
 
@@ -23,6 +24,8 @@ const ExpensesHistTab: React.FC = () => {
 
     const routerHistory = useHistory();
 
+    const ionList:any = useRef();
+
     useEffect(()=>{
         getExpenseListFromDB();
         getCurrencyFromDB();
@@ -42,12 +45,24 @@ const ExpensesHistTab: React.FC = () => {
     }
 
     const getCurrencyFromDB = async() => {
-        const val = await db.get("currency");
+      const val = await db.get("currency");
         if(val!==null){
             setCurrency(val);
         }else{
             setCurrency("MAD");
         }
+    }
+
+    const removeExpense = (idx:number) => {
+      var newExpenseList = [...expenseList];
+      const index = newExpenseList.indexOf(idx);
+      newExpenseList.splice(idx,1);
+
+      setExpenseList(newExpenseList);
+      db.set("expenses",newExpenseList);
+
+      ionList.current.closeSlidingItems();
+
     }
 
     const setColor = (category:string) => {
@@ -92,13 +107,12 @@ const ExpensesHistTab: React.FC = () => {
         </IonHeader>
 
         <div className="main-app">
-            <IonList mode="ios" lines="none">
+            <IonList mode="ios" lines="none" ref={ionList}>
             {
                 expenseList.map((expense:any, index:any)=>(
                     <IonItemSliding key={index}>
                         <IonItemOptions side="end">
-                            <IonItemOption color="primary" expandable>Edit</IonItemOption>
-                            <IonItemOption color="danger" expandable>Delete</IonItemOption>
+                            <IonItemOption color="danger" onClick={()=>{removeExpense(index)}} expandable>Delete <IonIcon icon={trash}/></IonItemOption>
                         </IonItemOptions>
                         <IonItem>
                           <IonCard mode="ios">
