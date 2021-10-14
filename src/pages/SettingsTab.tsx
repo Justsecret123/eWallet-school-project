@@ -25,6 +25,7 @@ const SettingsTab: React.FC = () => {
     const [db, setDb] = useState<Database | null>(database);
 
 
+
     useEffect(() => {
         
         async function getUser(){
@@ -60,6 +61,10 @@ const SettingsTab: React.FC = () => {
 
             db.set("username",modifiedUsername);
             db.set("currency", selectedCurrency);
+
+            document.getElementById("username")?.setAttribute("value","");
+            document.getElementById("currency")?.setAttribute("value","");
+
         }
     }
 
@@ -80,11 +85,11 @@ const SettingsTab: React.FC = () => {
                 <div className="main-app">
                     <IonItem>
                         <IonLabel position="stacked" className="labels">Change username</IonLabel>
-                        <IonInput type="text" placeholder={username + "..."}  onIonChange={e => setModifiedUsername(e.detail.value!)} minlength={4}></IonInput>
+                        <IonInput id="username" type="text" placeholder={username + "..."}  onIonChange={e => setModifiedUsername(e.detail.value!)} minlength={4}></IonInput>
                     </IonItem>
                     <IonItem>
                         <IonLabel position="stacked" className="labels">Change currency</IonLabel>
-                        <IonSelect onIonChange = {e => setSelectedCurrency(e.detail.value)} placeholder={currency}>
+                        <IonSelect id="currency" onIonChange = {e => setSelectedCurrency(e.detail.value)} placeholder={currency}>
                             {
                                 currencies.map(currency => (
                                     <IonSelectOption key={currency.code} value={currency.code}>

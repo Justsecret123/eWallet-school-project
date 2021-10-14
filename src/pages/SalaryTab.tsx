@@ -57,6 +57,9 @@ const SalaryTab: React.FC = () => {
 
       setSalaryList(newSalaryList);
       addSalaryToDB(newSalaryList);
+      
+      document.getElementById("amount")?.setAttribute("value","");
+      document.getElementById("date")?.setAttribute("value","");
 
     }
 
@@ -96,11 +99,11 @@ const SalaryTab: React.FC = () => {
 
           <IonItem>
             <IonLabel position="stacked" className="labels">Amount</IonLabel>
-            <IonInput mode="ios" type="number" placeholder="Amount..." onIonChange={e => setAmount(parseFloat(e.detail.value!))} required></IonInput>
+            <IonInput id="amount" mode="ios" type="number" placeholder="Amount..." onIonChange={e => setAmount(parseFloat(e.detail.value!))} required></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Payday</IonLabel>
-            <IonDatetime mode="ios" placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
+            <IonDatetime id="date" mode="ios" placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
           </IonItem>
           <IonButton expand="block" shape="round" className="custom-button" mode="ios" onClick={e => addSalary()}> Add salary <IonIcon icon={addCircle}></IonIcon> </IonButton>
 

@@ -3,8 +3,8 @@ import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
 import './expensesHist.css';
 import './salaryHist.css';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
-import { calendar, trash } from 'ionicons/icons';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { calendar, checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
 
 
 const store = new Storage(); 
@@ -23,6 +23,7 @@ const SalaryHistTab: React.FC = () => {
     const [currency, setCurrency] = useState<string>("MAD");
 
     const routerHistory = useHistory();
+    const [modifiersHidden, setModifiersHidden] = useState<boolean>(true);
 
     const ionList:any = useRef();
 
@@ -62,8 +63,18 @@ const SalaryHistTab: React.FC = () => {
         db.set("salaries",newSalaryList);
 
         ionList.current.closeSlidingItems();
-        
+
     }
+
+    const toggleModifiersVisibility = (idx:string) => {
+       let index:any = document.getElementById(idx);
+       if(index!==null){
+           index.classList.toggle("ion-hide");
+           document.getElementById("button-"+idx)?.classList.toggle("ion-hide");
+       }       
+       setModifiersHidden(true);
+    }
+    
 
     return(
         <IonPage>
@@ -91,7 +102,7 @@ const SalaryHistTab: React.FC = () => {
                 <IonList mode="ios" lines="none" ref={ionList}>
                     {
                         salaryList.map((salary:any, index:any)=>(
-                            <IonItemSliding>
+                            <IonItemSliding key={index}>
                                 <IonItemOptions side="end">
                                     <IonItemOption color="danger" expandable onClick={()=>{removeSalary(index)}}>Delete <IonIcon icon={trash}/> </IonItemOption>                                  
                                 </IonItemOptions>
@@ -100,10 +111,20 @@ const SalaryHistTab: React.FC = () => {
                                         <IonCardHeader>
                                             <IonCardTitle>
                                                 <IonIcon icon={calendar}/>
-                                                Payday: {salary.date}</IonCardTitle>
+                                                Payday: {salary.date}
+                                            </IonCardTitle>
                                         </IonCardHeader>
                                         <IonCardContent>
-                                            Amount : {salary.salary} {currency}
+                                            Amount : {salary.salary} {currency}<br/><br/>
+                                            <IonButton color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}>Edit <IonIcon icon={create}/></IonButton>
+                                            <div className="ion-hide" id={index}>
+                                                <IonLabel position="stacked">Modify payday: </IonLabel>
+                                                <IonDatetime placeholder={salary.date}></IonDatetime>
+                                                <IonLabel position="stacked">Modify amount: </IonLabel>
+                                                <IonInput type="number" placeholder={salary.salary}></IonInput>
+                                                <IonButton  color="secondary">Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
+                                                <IonButton color="danger" onClick={()=>toggleModifiersVisibility(index)}>Close <IonIcon icon={closeCircle}/></IonButton>
+                                            </div>
                                         </IonCardContent>
                                     </IonCard>
                                 </IonItem>

@@ -2,6 +2,35 @@ ion-segment, ion-segment * {
     color-scheme: dark!important;
 }
 
+ion-card-title {
+    font-size: large;
+}
+
 ion-card-title ion-icon {
     padding-right: 5px!important;
+}
+
+ion-card-content ion-button ion-icon {
+    padding-left: 5px!important;
+    font-size: medium!important;
+}
+
+ion-card-content ion-button {
+    font-size: medium;
+    width: 98%!important;
+    margin: auto;
+    text-align: center;
+}
+
+ion-card-content div ion-button {
+    width: 47%!important;
+    padding-right: 5px;
+}
+
+ion-card-content div ion-date-time {
+    width: 100%!important;
+}
+
+ion-card-content ion-label {
+    color: white!important;
 }
