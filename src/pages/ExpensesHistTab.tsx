@@ -22,6 +22,7 @@ const ExpensesHistTab: React.FC = () => {
 
     const [currency, setCurrency] = useState<string>("MAD");
 
+
     const routerHistory = useHistory();
 
     const ionList:any = useRef();
@@ -64,6 +65,8 @@ const ExpensesHistTab: React.FC = () => {
       ionList.current.closeSlidingItems();
 
     }
+
+
 
     const setColor = (category:string) => {
       switch(category){

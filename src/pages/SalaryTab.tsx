@@ -23,12 +23,15 @@ const SalaryTab: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<Date>();
 
+  const [isHistEmpty, setIsHistEmpty] = useState<boolean>(true);
+
   const [db, setDb] = useState<Database | null>(database);
 
   const routerHistory = useHistory();
 
   useEffect(()=>{
     getSalaryListFromDB();
+    setIsHistEmpty(isEmptySalaryList());
   });
 
   const getSalaryListFromDB = async() => {
@@ -56,8 +59,12 @@ const SalaryTab: React.FC = () => {
       addSalaryToDB(newSalaryList);
 
     }
-    
-  };
+
+  }
+
+  const isEmptySalaryList = () => {
+    return salaryList.length===0 ? true:false;
+  }
 
   const redirectToHistory = () => {
     routerHistory.push("/salaryHist");
@@ -73,7 +80,7 @@ const SalaryTab: React.FC = () => {
             <IonSegmentButton disabled={true}>
               <IonLabel>Add a salary</IonLabel>
             </IonSegmentButton>
-            <IonSegmentButton onClick={()=> redirectToHistory()}>
+            <IonSegmentButton  disabled={isHistEmpty} onClick={()=> redirectToHistory()}>
               <IonLabel>History</IonLabel>
             </IonSegmentButton>
         </IonSegment>

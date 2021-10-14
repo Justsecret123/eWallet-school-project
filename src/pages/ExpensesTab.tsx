@@ -28,10 +28,14 @@ const ExpensesTab: React.FC = () => {
   const [keywords, setKeywords] = useState<any>();
 
   const[db, setDb] = useState<Database | null>(database);
+
+  const [isHistEmpty, setIsHistEmpty] = useState<boolean>(true);
+
   const routerHistory = useHistory();
 
   useEffect(()=>{
     getExpenseListFromDB();
+    setIsHistEmpty(isEmptyExpenseList());
   });
 
   const getExpenseListFromDB = async() => {
@@ -65,6 +69,10 @@ const ExpensesTab: React.FC = () => {
     routerHistory.push("/expensesHist");
   }
 
+  const isEmptyExpenseList = () => {
+    return expenseList.length===0 ? true:false;
+  }
+
   return (
     <IonPage>
       <IonHeader>
@@ -75,7 +83,7 @@ const ExpensesTab: React.FC = () => {
             <IonSegmentButton disabled={true}>
               <IonLabel>Add an expense</IonLabel>
             </IonSegmentButton>
-            <IonSegmentButton onClick={()=> redirectToHistory()}>
+            <IonSegmentButton disabled={isHistEmpty} onClick={()=> redirectToHistory()}>
               <IonLabel>History</IonLabel>
             </IonSegmentButton>
         </IonSegment>
