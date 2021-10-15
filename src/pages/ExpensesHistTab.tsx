@@ -23,15 +23,9 @@ const ExpensesHistTab: React.FC = () => {
 
     const [currency, setCurrency] = useState<string>("");
 
-    const [newDate, setNewDate] = useState<Date>();
-    const [newAmount, setNewAmount] = useState<number>(-1);
-    const [newCategory, setNewCategory] = useState<string>("");
-    const [newKeywords, setNewKeywords] = useState<string>("");
-
     const routerHistory = useHistory();
 
     const ionList:any = useRef();
-    const slider:any = useRef();
 
     useEffect(()=>{
         getExpenseListFromDB();
@@ -84,12 +78,11 @@ const ExpensesHistTab: React.FC = () => {
 
      var amount:number = e.detail.amount;
 
-     if(amount>200){
+     if(amount>158){
        removeExpense(idx);
      }
      
    }
-
 
 
     const setColor = (category:string) => {
@@ -138,7 +131,7 @@ const ExpensesHistTab: React.FC = () => {
             <IonList mode="ios" lines="none" ref={ionList}>
             {
                 expenseList.map((expense:any, index:any)=>(
-                    <IonItemSliding key={index}  ref={slider} onIonDrag={(e)=>getSlidingRatio(e,index)}>
+                    <IonItemSliding key={index}  onIonDrag={(e)=>getSlidingRatio(e,index)}>
                         <IonItemOptions side="end">
                             <IonItemOption color="danger" onClick={()=>{removeExpense(index)}} expandable>Delete <IonIcon icon={trash}/></IonItemOption>
                         </IonItemOptions>
@@ -166,7 +159,7 @@ const ExpensesHistTab: React.FC = () => {
                                   <IonSelectOption value="Extra">Extra</IonSelectOption>
                               </IonSelect>
                               <IonLabel position="stacked">Keywords</IonLabel>
-                              <IonInput placeholder={expense.keywords} spellcheck={true} autoCorrect="on"></IonInput>
+                              <IonInput placeholder={expense.keywords}></IonInput>
                               <IonButton  color="secondary">Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
                               <IonButton color="danger" onClick={()=>toggleModifiersVisibility(index)}>Close <IonIcon icon={closeCircle}/></IonButton>
                               </div>

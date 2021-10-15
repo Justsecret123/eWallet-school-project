@@ -20,7 +20,6 @@ const today = new Date();
 
 const ExpensesTab: React.FC = () => {
 
-  const [balance, setBalance] = useState<number>();
   const [expenseList, setExpenseList] = useState<any>([]);
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<Date>();
@@ -42,8 +41,6 @@ const ExpensesTab: React.FC = () => {
     const val = await db.get("expenses");
     if(val!==null){
       setExpenseList(val);
-    }else{
-      setExpenseList([]);
     }
   }
 
@@ -55,6 +52,7 @@ const ExpensesTab: React.FC = () => {
     if(amount>0 && category!==""){
       let newExpense:any = {"amount": amount, "date": date, "category": category, "keywords": keywords};
       let newExpenseList:any = [...expenseList];
+
       newExpenseList.push(newExpense);
       
       setExpenseList(newExpenseList);
@@ -116,7 +114,7 @@ const ExpensesTab: React.FC = () => {
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Keywords</IonLabel>
-            <IonInput placeholder="Keyword, Keyword..." onIonChange={e => setKeywords(e.detail.value!)} spellcheck={true} autoCorrect="on"></IonInput>
+            <IonInput placeholder="Keyword, Keyword..." onIonChange={e => setKeywords(e.detail.value!)}></IonInput>
           </IonItem>
 
           <IonButton expand="block" className="custom-button" shape="round" mode="ios" onClick={e => addExpense() }> 
