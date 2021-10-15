@@ -30,6 +30,7 @@ const ExpensesHistTab: React.FC = () => {
     const routerHistory = useHistory();
 
     const ionList:any = useRef();
+    const slider:any = useRef();
 
     useEffect(()=>{
         getExpenseListFromDB();
@@ -76,6 +77,16 @@ const ExpensesHistTab: React.FC = () => {
           index.classList.toggle("ion-hide");
           document.getElementById("button-"+idx)?.classList.toggle("ion-hide");
       }       
+   }
+
+   const getSlidingRatio = (e:any,idx:number) => {
+
+     var amount:number = e.detail.amount;
+
+     if(amount>200){
+       removeExpense(idx);
+     }
+     
    }
 
 
@@ -125,7 +136,7 @@ const ExpensesHistTab: React.FC = () => {
             <IonList mode="ios" lines="none" ref={ionList}>
             {
                 expenseList.map((expense:any, index:any)=>(
-                    <IonItemSliding key={index}>
+                    <IonItemSliding key={index}  ref={slider} onIonDrag={(e)=>getSlidingRatio(e,index)}>
                         <IonItemOptions side="end">
                             <IonItemOption color="danger" onClick={()=>{removeExpense(index)}} expandable>Delete <IonIcon icon={trash}/></IonItemOption>
                         </IonItemOptions>

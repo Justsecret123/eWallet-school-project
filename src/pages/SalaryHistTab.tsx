@@ -113,6 +113,16 @@ const SalaryHistTab: React.FC = () => {
            document.getElementById("button-"+idx)?.classList.toggle("ion-hide");
        }       
     }
+
+    const getSlidingRatio = (e:any,idx:number) => {
+
+        var amount:number = e.detail.amount;
+   
+        if(amount>200){
+          removeSalary(idx);
+        }
+        
+      }
     
 
     return(
@@ -141,7 +151,7 @@ const SalaryHistTab: React.FC = () => {
                 <IonList mode="ios" lines="none" ref={ionList}>
                     {
                         salaryList.map((salary:any, index:any)=>(
-                            <IonItemSliding key={index}>
+                            <IonItemSliding key={index} onIonDrag={(e)=>getSlidingRatio(e,index)}>
                                 <IonItemOptions side="end">
                                     <IonItemOption color="danger" expandable onClick={()=>{removeSalary(index)}}>Delete <IonIcon icon={trash}/> </IonItemOption>                                  
                                 </IonItemOptions>
