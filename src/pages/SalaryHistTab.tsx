@@ -18,10 +18,10 @@ store.create().then(function(result){
 const SalaryHistTab: React.FC = () => {
 
     const[db, setDb] = useState<Database | null>(database);
-    const [salaryList, setSalaryList] = useState<any>([]);
+    const [salaryList, setSalaryList] = useState<any>(null);
     const [currency, setCurrency] = useState<string>("");
 
-    const [updates, setUpdates] = useState<any>();
+    const [updates, setUpdates] = useState<any>(null);
 
     const routerHistory = useHistory();
 
@@ -73,9 +73,6 @@ const SalaryHistTab: React.FC = () => {
             setUpdates(val);
         }else if(val!==null && updates!==null){
             setSalaryList(val);
-        }else{
-            setSalaryList(null);
-            setUpdates(null);
         }
     }
 
@@ -83,8 +80,6 @@ const SalaryHistTab: React.FC = () => {
         const val = await db.get("currency");
         if(val!==null){
             setCurrency(val);
-        }else{
-            setCurrency("");
         }
     }
 
@@ -118,7 +113,7 @@ const SalaryHistTab: React.FC = () => {
 
         var amount:number = e.detail.amount;
    
-        if(amount>200){
+        if(amount>158){
           removeSalary(idx);
         }
         

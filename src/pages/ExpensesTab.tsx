@@ -18,7 +18,7 @@ store.create().then(function(result){
 
 const today = new Date();
 
-const ExpensesTab: React.FC = () => {
+const ExpensesTab: React.FC = (props) => {
 
   const [expenseList, setExpenseList] = useState<any>([]);
   const [amount, setAmount] = useState<number>(0);

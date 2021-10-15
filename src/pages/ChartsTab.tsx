@@ -1,5 +1,4 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
 import './charts.css';
 
 const ChartsTab: React.FC = () => {
@@ -16,7 +15,6 @@ const ChartsTab: React.FC = () => {
             <IonTitle size="large">Charts</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 3 page" />
       </IonContent>
     </IonPage>
   );

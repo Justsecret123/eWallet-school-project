@@ -40,8 +40,6 @@ const ExpensesHistTab: React.FC = () => {
         const val = await db.get("expenses");
         if(val!==null){
           setExpenseList(val);
-        }else{
-          setExpenseList([]);
         }
     }
 
@@ -49,8 +47,6 @@ const ExpensesHistTab: React.FC = () => {
       const val = await db.get("currency");
         if(val!==null){
             setCurrency(val);
-        }else{
-            setCurrency("");
         }
     }
 
