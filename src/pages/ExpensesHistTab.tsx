@@ -11,6 +11,7 @@ const store = new Storage();
 
 var database:any = null;
 
+
 store.create().then(function(result){
   database = result;
 });

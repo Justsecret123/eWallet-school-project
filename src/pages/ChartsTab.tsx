@@ -1,19 +1,19 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import './history.css';
+import './charts.css';
 
-const HistoryTab: React.FC = () => {
+const ChartsTab: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>History</IonTitle>
+          <IonTitle>Charts</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">History</IonTitle>
+            <IonTitle size="large">Charts</IonTitle>
           </IonToolbar>
         </IonHeader>
         <ExploreContainer name="Tab 3 page" />
@@ -22,4 +22,4 @@ const HistoryTab: React.FC = () => {
   );
 };
 
-export default HistoryTab;
+export default ChartsTab;
