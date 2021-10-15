@@ -3,7 +3,7 @@ import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
 import './expensesHist.css';
 import './salaryHist.css';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
 import { calendar, checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
 
 
@@ -148,6 +148,7 @@ const SalaryHistTab: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <div className="main-app">
+                <IonSearchbar enterkeyhint="enter" placeholder={"Search..."} animated={true} input-mode="text" mode="ios"></IonSearchbar>
                 <IonList mode="ios" lines="none" ref={ionList}>
                     {
                         salaryList.map((salary:any, index:any)=>(

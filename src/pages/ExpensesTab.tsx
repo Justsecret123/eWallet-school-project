@@ -56,8 +56,6 @@ const ExpensesTab: React.FC = () => {
       let newExpense:any = {"amount": amount, "date": date, "category": category, "keywords": keywords};
       let newExpenseList:any = [...expenseList];
       newExpenseList.push(newExpense);
-
-      console.log(newExpenseList);
       
       setExpenseList(newExpenseList);
       addExpenseToDB(newExpenseList);

@@ -27,29 +27,29 @@ const SettingsTab: React.FC = () => {
 
 
     useEffect(() => {
-        
-        async function getUser(){
-            const val = await db.get("username");
-            if(val!==null){
-                setUsername(val);
-            }else{
-                setUsername("");
-            }
-        }
-
-        async function getCurrency(){
-            const val = await db.get("currency");
-            if(val!==null){
-                setCurrency(val);
-            }else{
-                setCurrency("");
-            }
-        }
 
         getUser();
         getCurrency();
 
     });
+
+    const getUser = async() => {
+        const val = await db.get("username");
+        if(val!==null){
+            setUsername(val);
+        }else{
+            setUsername("");
+        }
+    }
+
+    const getCurrency = async() => {
+        const val = await db.get("currency");
+        if(val!==null){
+            setCurrency(val);
+        }else{
+            setCurrency("");
+        }
+    }
 
     const ConfirmChanges = () => {
         if(modifiedUsername == "" && selectedCurrency!==""){
