@@ -20,8 +20,12 @@ const ExpensesHistTab: React.FC = () => {
     const [expenseList, setExpenseList] = useState<any>([]);
     const[db, setDb] = useState<Database | null>(database);
 
-    const [currency, setCurrency] = useState<string>("MAD");
+    const [currency, setCurrency] = useState<string>("");
 
+    const [newDate, setNewDate] = useState<Date>();
+    const [newAmount, setNewAmount] = useState<number>(-1);
+    const [newCategory, setNewCategory] = useState<string>("");
+    const [newKeywords, setNewKeywords] = useState<string>("");
 
     const routerHistory = useHistory();
 
@@ -50,13 +54,13 @@ const ExpensesHistTab: React.FC = () => {
         if(val!==null){
             setCurrency(val);
         }else{
-            setCurrency("MAD");
+            setCurrency("");
         }
     }
 
     const removeExpense = (idx:number) => {
+
       var newExpenseList = [...expenseList];
-      const index = newExpenseList.indexOf(idx);
       newExpenseList.splice(idx,1);
 
       setExpenseList(newExpenseList);
@@ -148,6 +152,8 @@ const ExpensesHistTab: React.FC = () => {
                                   <IonSelectOption value="Clothes">Clothes</IonSelectOption>
                                   <IonSelectOption value="Extra">Extra</IonSelectOption>
                               </IonSelect>
+                              <IonLabel position="stacked">Keywords</IonLabel>
+                              <IonInput placeholder="Keyword, Keyword..." spellcheck={true} autoCorrect="on"></IonInput>
                               <IonButton  color="secondary">Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
                               <IonButton color="danger" onClick={()=>toggleModifiersVisibility(index)}>Close <IonIcon icon={closeCircle}/></IonButton>
                               </div>

@@ -17,10 +17,11 @@ store.create().then(function(result){
 
 const SalaryHistTab: React.FC = () => {
 
-
     const[db, setDb] = useState<Database | null>(database);
     const [salaryList, setSalaryList] = useState<any>([]);
-    const [currency, setCurrency] = useState<string>("MAD");
+    const [currency, setCurrency] = useState<string>("");
+
+    const [updates, setUpdates] = useState<any>();
 
     const routerHistory = useHistory();
 
@@ -30,6 +31,36 @@ const SalaryHistTab: React.FC = () => {
         getSalaryHistFromDB();
         getCurrencyFromDB();
     });
+
+    const addUpateAmount = (idx:any, newAmount:string) => {
+        var newUpdates:any = [...updates];
+        var amount:number = parseInt(newAmount);
+        newUpdates[idx].salary = amount;
+
+        setUpdates(newUpdates);
+
+    }
+
+    const addUpdateDate = (idx:any, newDate:string) => {
+        var newUpdates:any = [...updates];
+        newUpdates[idx].date = newDate.toLocaleString();
+
+        setUpdates(newUpdates);
+        
+    }
+
+    const addUpdate = (idx:any) => {
+
+        var newSalaryList = [...salaryList];
+        const updatesList = updates;
+
+        newSalaryList[idx] = updatesList[idx];
+        
+        setSalaryList(newSalaryList);
+        
+        db.set("salaries",newSalaryList);
+
+    }
     
     const redirectToAdd = () => {
         routerHistory.push("/tab1");
@@ -37,10 +68,14 @@ const SalaryHistTab: React.FC = () => {
 
     const getSalaryHistFromDB = async() => {
         const val = await db.get("salaries");
-        if(val!==null){
+        if(val!==null && updates==null){
+            setSalaryList(val);
+            setUpdates(val);
+        }else if(val!==null && updates!==null){
             setSalaryList(val);
         }else{
             setSalaryList(null);
+            setUpdates(null);
         }
     }
 
@@ -49,16 +84,22 @@ const SalaryHistTab: React.FC = () => {
         if(val!==null){
             setCurrency(val);
         }else{
-            setCurrency("MAD");
+            setCurrency("");
         }
     }
 
     const removeSalary = (idx:number) => {
+
         var newSalaryList = [...salaryList];
-        const index = newSalaryList.indexOf(idx);
+        var newUpdatesList = [...updates];
+
+
         newSalaryList.splice(idx,1);
+        newUpdatesList.splice(idx,1);
 
         setSalaryList(newSalaryList);
+        setUpdates(newUpdatesList);
+
         db.set("salaries",newSalaryList);
 
         ionList.current.closeSlidingItems();
@@ -117,10 +158,10 @@ const SalaryHistTab: React.FC = () => {
                                             <IonButton color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}>Edit <IonIcon icon={create}/></IonButton>
                                             <div className="ion-hide" id={index}>
                                                 <IonLabel position="stacked">Modify payday: </IonLabel>
-                                                <IonDatetime placeholder={salary.date}></IonDatetime>
+                                                <IonDatetime id={"date-"+index} placeholder={salary.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString())}></IonDatetime>
                                                 <IonLabel position="stacked">Modify amount: </IonLabel>
-                                                <IonInput type="number" placeholder={salary.salary}></IonInput>
-                                                <IonButton  color="secondary">Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
+                                                <IonInput id={"input-"+index} type="number" onIonChange={e=>addUpateAmount(index,e.detail.value!)} placeholder={salary.salary}></IonInput>
+                                                <IonButton  color="secondary" onClick={()=>addUpdate(index)}>Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
                                                 <IonButton color="danger" onClick={()=>toggleModifiersVisibility(index)}>Close <IonIcon icon={closeCircle}/></IonButton>
                                             </div>
                                         </IonCardContent>
