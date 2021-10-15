@@ -145,7 +145,7 @@ const ExpensesHistTab: React.FC = () => {
                                 <IonLabel position="stacked">Modify amount: </IonLabel>
                                 <IonInput type="number" placeholder={expense.amount}></IonInput>
                                 <IonLabel position="stacked">Category</IonLabel>
-                                <IonSelect mode="ios" placeholder="Select a category">
+                                <IonSelect mode="ios" placeholder={expense.category}>
                                   <IonSelectOption value="Housing">Housing</IonSelectOption>
                                   <IonSelectOption value="Food">Food</IonSelectOption>
                                   <IonSelectOption value="Bills">Bills</IonSelectOption>
@@ -153,7 +153,7 @@ const ExpensesHistTab: React.FC = () => {
                                   <IonSelectOption value="Extra">Extra</IonSelectOption>
                               </IonSelect>
                               <IonLabel position="stacked">Keywords</IonLabel>
-                              <IonInput placeholder="Keyword, Keyword..." spellcheck={true} autoCorrect="on"></IonInput>
+                              <IonInput placeholder={expense.keywords} spellcheck={true} autoCorrect="on"></IonInput>
                               <IonButton  color="secondary">Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
                               <IonButton color="danger" onClick={()=>toggleModifiersVisibility(index)}>Close <IonIcon icon={closeCircle}/></IonButton>
                               </div>
