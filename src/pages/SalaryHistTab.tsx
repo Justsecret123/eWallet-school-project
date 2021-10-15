@@ -18,7 +18,7 @@ store.create().then(function(result){
 const SalaryHistTab: React.FC = () => {
 
     const[db, setDb] = useState<Database | null>(database);
-    const [salaryList, setSalaryList] = useState<any>(null);
+    const [salaryList, setSalaryList] = useState<any>([]);
     const [currency, setCurrency] = useState<string>("");
 
     const [updates, setUpdates] = useState<any>(null);

@@ -17,7 +17,6 @@ const today = new Date();
 
 const SalaryTab: React.FC = () => {
 
-  const [balance, setBalance] = useState<number>(5000);
   const [salaryList, setSalaryList] = useState<any>([]);
 
   const [amount, setAmount] = useState<number>(0);
@@ -66,7 +65,7 @@ const SalaryTab: React.FC = () => {
   }
 
   const isEmptySalaryList = () => {
-    return salaryList.length===0 ? true:false;
+    return salaryList===[]||salaryList.length===0 ? true:false;
   }
 
   const redirectToHistory = () => {
@@ -105,7 +104,7 @@ const SalaryTab: React.FC = () => {
             <IonLabel position="stacked" className="labels">Payday</IonLabel>
             <IonDatetime id="date" mode="ios" placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
           </IonItem>
-          <IonButton expand="block" shape="round" className="custom-button" mode="ios" onClick={e => addSalary()}> Add salary <IonIcon icon={addCircle}></IonIcon> </IonButton>
+          <IonButton expand="block" shape="round" className="custom-button" mode="ios" onClick={() => addSalary()}> Add salary <IonIcon icon={addCircle}></IonIcon> </IonButton>
 
         </div>
         
