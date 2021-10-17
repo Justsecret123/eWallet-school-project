@@ -17,9 +17,11 @@ ion-card-content ion-button ion-icon {
 
 ion-card-content ion-button {
     font-size: medium;
-    width: 98%!important;
-    margin: auto;
+    width: 99%!important;
     text-align: center;
+    position: relative!important;
+    top: 15px!important;
+    margin-bottom: 15px!important;
 }
 
 ion-card-content div ion-button {
@@ -41,6 +43,10 @@ ion-item {
 
 ion-item-sliding {
     pointer-events: initial !important;
+}
+
+ion-item-sliding {
+    width: 100%!important;
 }
 
 .item-cover{

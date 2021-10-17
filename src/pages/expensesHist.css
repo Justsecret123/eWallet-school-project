@@ -1,9 +1,9 @@
-.main-app, ion-item-options, .button-native {
+.main-app {
     position: absolute;
-    width: 95%;
+    width: 98%;
     height: inherit;
     top: 20%;
-    left: 2%;
+    left: 0%;
 }
 
 
@@ -11,9 +11,33 @@ ion-badge {
     margin-left: 15px!important;
 }
 
-ion-card {
-    width: 100%!important;
+@media screen and (max-width: 812px){
+    ion-card {
+        width: 95%!important;
+    }
+    .main-app {
+        left: 2%!important;
+    }
+    ion-searchbar {
+        width: 92%!important;
+        left: 2%!important;
+    }
 }
+
+@media screen and (min-width: 813px){
+    ion-card {
+        width: 98%!important;
+    }
+    .main-app {
+        left: 2%!important;
+    }
+    ion-searchbar {
+        width: 95%!important;
+        left: 2%!important;
+    }
+}
+
+
 
 ion-segment, ion-segment * {
     color-scheme: dark!important;

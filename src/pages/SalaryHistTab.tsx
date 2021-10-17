@@ -140,7 +140,7 @@ const SalaryHistTab: React.FC = () => {
                                 <IonItemOptions side="end">
                                     <IonItemOption color="danger" expandable onClick={()=>{removeSalary(index)}}>Delete <IonIcon icon={trash}/> </IonItemOption>                                  
                                 </IonItemOptions>
-                                <IonItem>
+                                <IonItem button>
                                     <IonCard mode="ios">
                                         <IonCardHeader>
                                             <IonCardTitle>
