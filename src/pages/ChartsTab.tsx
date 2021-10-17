@@ -1,6 +1,7 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
 import { useEffect, useState, useCallback } from 'react';
+import { useHistory } from 'react-router';
 import './charts.css';
 
 const store = new Storage();
@@ -15,15 +16,23 @@ const ChartsTab: React.FC = () => {
   
   const [db, setDb] = useState<Database | null>(database);
 
+  const routerHistory = useHistory();
+  const [history, setHistory] = useState<any>([]);
   
   const [expenseList, setExpenseList] = useState<any>([]);
   const [totalsByCategory, setTotalsByCategory] = useState<any>({"Housing":0, "Food":0, "Bills":0, "Clothes":0, "Extra":0});
 
-  useEffect(()=>{
+  const [trigger, setTrigger] = useState<boolean>(true);
 
+  useEffect(()=>{
     getExpenseListFromDB();
-    
-  },[]);
+  },[trigger]);
+
+  useIonViewDidEnter(()=>{
+    setTrigger(!trigger);
+  })
+
+
 
 
   const getExpenseListFromDB = async() => {
@@ -31,6 +40,7 @@ const ChartsTab: React.FC = () => {
     if(val!==null){
       setExpenseList(val);
       getTotalExpensesByCategory(val);
+      setHistory(routerHistory);
     }
   };
 

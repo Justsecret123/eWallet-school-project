@@ -36,8 +36,9 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import SalaryHistTab from './pages/SalaryHistTab';
 import ChartsTab from './pages/ChartsTab';
+import { createBrowserHistory } from "history";
 
-
+const history = createBrowserHistory();
 
 const App: React.FC = () => {
   

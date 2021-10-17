@@ -1,4 +1,4 @@
-import { IonContent, IonDatetime, IonHeader, IonIcon, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonDatetime, IonHeader, IonIcon, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
 import { IonSelect, IonSelectOption, IonButton } from '@ionic/react';
 import { addCircle } from "ionicons/icons";
@@ -25,27 +25,32 @@ const ExpensesTab: React.FC = () => {
   const [date, setDate] = useState<Date>();
   const [category, setCategory] = useState<string>();
   const [keywords, setKeywords] = useState<any>();
+  const [trigger, setTrigger] = useState<boolean>(true);
 
   const[db, setDb] = useState<Database | null>(database);
-
-  const [isHistEmpty, setIsHistEmpty] = useState<boolean>(true);
 
   const routerHistory = useHistory();
 
   useEffect(()=>{
     getExpenseListFromDB();
-    setIsHistEmpty(isEmptyExpenseList());
-  });
+  },[trigger]);
+
+  useIonViewDidEnter(()=>{
+    setTrigger(!trigger);
+  })
 
   const getExpenseListFromDB = async() => {
     const val = await db.get("expenses");
     if(val!==null){
       setExpenseList(val);
+    }else{
+      setExpenseList([]);
     }
   }
 
   const addExpenseToDB = (newExpenseList:any) => {
     db.set("expenses",newExpenseList);
+    setTrigger(!trigger);
   }
 
   const addExpense = () => {
@@ -62,11 +67,7 @@ const ExpensesTab: React.FC = () => {
   }
 
   const redirectToHistory = () => {
-    routerHistory.push("/expensesHist");
-  }
-
-  const isEmptyExpenseList = () => {
-    return expenseList.length===0 ? true:false;
+    routerHistory.push("/expensesHist", {from: "expensesHist"});
   }
 
   return (
@@ -79,7 +80,7 @@ const ExpensesTab: React.FC = () => {
             <IonSegmentButton disabled={true}>
               <IonLabel>Add an expense</IonLabel>
             </IonSegmentButton>
-            <IonSegmentButton disabled={isHistEmpty} onClick={()=> redirectToHistory()}>
+            <IonSegmentButton onClick={()=> redirectToHistory()}>
               <IonLabel>History</IonLabel>
             </IonSegmentButton>
         </IonSegment>

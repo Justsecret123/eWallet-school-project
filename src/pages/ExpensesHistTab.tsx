@@ -1,4 +1,4 @@
-import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { IonItem, IonLabel } from '@ionic/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
@@ -23,7 +23,9 @@ const ExpensesHistTab: React.FC = () => {
 
     const [currency, setCurrency] = useState<string>("");
 
-    const routerHistory = useHistory();
+    const routerHistory:any = useHistory();
+
+    const [history, setHistory] = useState<any>([]);
 
     const ionList:any = useRef();
 
@@ -31,6 +33,7 @@ const ExpensesHistTab: React.FC = () => {
       const val = await db.get("expenses");
       if(val!==null){
         setExpenseList(val);
+        setHistory(routerHistory);
       }
     };
 
@@ -42,12 +45,16 @@ const ExpensesHistTab: React.FC = () => {
     };
 
     useEffect(()=>{
-        getExpenseListFromDB();
-        getCurrencyFromDB();
+      getExpenseListFromDB();
+      getCurrencyFromDB();
     },[trigger]);
+
+    useIonViewDidEnter(()=>{
+      setTrigger(!trigger);
+    });
     
     const redirectToAdd = () => {
-        routerHistory.push("/tab2");
+        routerHistory.push("/tab2", {from: "expensesHist"});
     }
 
     const removeExpense = (idx:number) => {

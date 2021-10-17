@@ -34,3 +34,7 @@ ion-card-content div ion-date-time {
 ion-card-content ion-label {
     color: white!important;
 }
+
+ion-date-time {
+    max-height: 50%!important;
+}

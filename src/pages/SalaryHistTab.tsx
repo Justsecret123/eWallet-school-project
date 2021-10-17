@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
 import './expensesHist.css';
 import './salaryHist.css';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { calendar, checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
 
 
@@ -15,24 +15,30 @@ store.create().then(function(result){
   database = result;
 });
 
+
 const SalaryHistTab: React.FC = () => {
 
     const[db, setDb] = useState<Database | null>(database);
+    
     const [salaryList, setSalaryList] = useState<any>([]);
     const [currency, setCurrency] = useState<string>("");
     const [trigger, setTrigger] = useState<boolean>(true);
 
     const [updates, setUpdates] = useState<any>(null);
 
-    const routerHistory = useHistory();
+    var routerHistory:any = useHistory();
 
     const ionList:any = useRef();
+
 
     useEffect(()=>{
         getSalaryHistFromDB();
         getCurrencyFromDB();
-        console.log("Changed");
     },[trigger]);
+
+    useIonViewDidEnter(()=>{
+        setTrigger(!trigger);
+    });
 
     const addUpateAmount = (idx:any, newAmount:string) => {
         var newUpdates:any = [...updates];
@@ -67,7 +73,8 @@ const SalaryHistTab: React.FC = () => {
     }
     
     const redirectToAdd = () => {
-        routerHistory.push("/tab1");
+        setTrigger(!trigger);
+        routerHistory.push("/tab1",{from: "salaryHist"});
     }
 
     const getSalaryHistFromDB = async() => {
@@ -78,14 +85,14 @@ const SalaryHistTab: React.FC = () => {
         }else if(val!==null && updates!==null){
             setSalaryList(val);
         }
-    }
+    };
 
     const getCurrencyFromDB = async() => {
         const val = await db.get("currency");
         if(val!==null){
             setCurrency(val);
         }
-    }
+    };
 
     const removeSalary = (idx:number) => {
 
@@ -103,7 +110,7 @@ const SalaryHistTab: React.FC = () => {
 
         ionList.current.closeSlidingItems();
 
-        setTrigger(!trigger);
+        setTrigger(false);
 
     }
 

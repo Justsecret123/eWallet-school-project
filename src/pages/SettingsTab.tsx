@@ -1,9 +1,10 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonAlert } from "@ionic/react";
+import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonAlert, useIonViewDidEnter } from "@ionic/react";
 import {checkmarkCircle} from "ionicons/icons";
 import "./settings.css";
 import { currency_list } from "../currencies";
 import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
+import { useHistory } from "react-router";
 
 const currencies = currency_list;
 const store = new Storage();
@@ -22,16 +23,22 @@ const SettingsTab: React.FC = () => {
     const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
     const [modifiedUsername, setModifiedUsername] = useState<string>(username);
 
+    const [trigger, setTrigger] = useState<boolean>(true);
+
     const [db, setDb] = useState<Database | null>(database);
+
+    const history = useHistory();
 
 
 
     useEffect(() => {
-
         getUser();
         getCurrency();
+    },[trigger]);
 
-    });
+    useIonViewDidEnter(()=>{
+        setTrigger(!trigger);
+    })
 
     const getUser = async() => {
         const val = await db.get("username");
@@ -58,11 +65,15 @@ const SettingsTab: React.FC = () => {
             db.set("currency",selectedCurrency);
             document.getElementById("currency")?.setAttribute("value","");
 
+            setTrigger(!trigger);
+
         }else if(selectedCurrency=="" && modifiedUsername!==""){
 
             setUsername(modifiedUsername);
             db.set("username",modifiedUsername);
             document.getElementById("username")?.setAttribute("value","");
+
+            setTrigger(!trigger);
 
         }else{
 
@@ -74,6 +85,8 @@ const SettingsTab: React.FC = () => {
 
             document.getElementById("username")?.setAttribute("value","");
             document.getElementById("currency")?.setAttribute("value","");
+
+            setTrigger(!trigger);
 
         }
     }

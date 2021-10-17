@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { IonDatetime } from '@ionic/react';
 import { addCircle } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
@@ -22,27 +22,27 @@ const SalaryTab: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<Date>();
 
-  const [isHistEmpty, setIsHistEmpty] = useState<boolean>(true);
   const [trigger, setTrigger] = useState<boolean>(true);
 
   const [db, setDb] = useState<Database | null>(database);
-  
 
   const routerHistory = useHistory();
 
   useEffect(()=>{
+      getSalaryListFromDB();
+  },[]);
+
+  useIonViewDidEnter(()=>{
     getSalaryListFromDB();
-    setIsHistEmpty(isEmptySalaryList());
-    console.log("Trigger");
-  },[trigger]);
+  });
 
   const getSalaryListFromDB = async() => {
-    const val = await db.get("salaries");
-    if(val!==null){
-      setSalaryList(val);
-    }else{
-      setSalaryList([]);
-    }
+      const val = await db.get("salaries");
+      if(val!==null){
+        setSalaryList(val);
+      }else{
+        setSalaryList([]);
+      }
   }
   
 
@@ -70,12 +70,8 @@ const SalaryTab: React.FC = () => {
 
   }
 
-  const isEmptySalaryList = () => {
-    return salaryList===[]||salaryList.length===0 ? true:false;
-  }
-
   const redirectToHistory = () => {
-    routerHistory.push("/salaryHist");
+    routerHistory.push("/salaryHist",{from: "salary"});
   }
 
   return (
@@ -88,7 +84,7 @@ const SalaryTab: React.FC = () => {
             <IonSegmentButton disabled={true}>
               <IonLabel>Add a salary</IonLabel>
             </IonSegmentButton>
-            <IonSegmentButton  disabled={isHistEmpty} onClick={()=> redirectToHistory()}>
+            <IonSegmentButton onClick={()=> redirectToHistory()}>
               <IonLabel>History</IonLabel>
             </IonSegmentButton>
         </IonSegment>
