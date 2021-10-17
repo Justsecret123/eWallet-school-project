@@ -1,4 +1,4 @@
-import { IonContent, IonDatetime, IonHeader, IonIcon, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonDatetime, IonHeader, IonIcon, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
 import { IonSelect, IonSelectOption, IonButton } from '@ionic/react';
 import { addCircle } from "ionicons/icons";
@@ -35,9 +35,9 @@ const ExpensesTab: React.FC = () => {
     getExpenseListFromDB();
   },[trigger]);
 
-  useIonViewDidEnter(()=>{
+  useIonViewWillEnter(()=>{
     setTrigger(!trigger);
-  })
+  });
 
   const getExpenseListFromDB = async() => {
     const val = await db.get("expenses");
@@ -55,7 +55,7 @@ const ExpensesTab: React.FC = () => {
 
   const addExpense = () => {
     if(amount>0 && category!==""){
-      let newExpense:any = {"amount": amount, "date": date, "category": category, "keywords": keywords};
+      let newExpense:any = {"amount": amount, "date": date?.toLocaleDateString(), "category": category, "keywords": keywords};
       let newExpenseList:any = [...expenseList];
 
       newExpenseList.push(newExpense);

@@ -1,10 +1,11 @@
-.main-app {
+.main-app, ion-item-options, .button-native {
     position: absolute;
     width: 95%;
     height: inherit;
     top: 20%;
     left: 2%;
 }
+
 
 ion-badge {
     margin-left: 15px!important;
@@ -18,7 +19,9 @@ ion-segment, ion-segment * {
     color-scheme: dark!important;
 }
 
-ion-card-content div ion-select {
-    width: 98%!important;
-    padding-right: 5px;
+ion-item {
+    --background: none;
+    opacity:1;
+    --padding-start: none!important;
 }
+

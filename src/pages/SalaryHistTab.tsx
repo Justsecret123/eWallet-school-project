@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {  createRef, useEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
 import './expensesHist.css';
 import './salaryHist.css';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter} from '@ionic/react';
 import { calendar, checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
 
 
@@ -17,18 +17,15 @@ store.create().then(function(result){
 
 
 const SalaryHistTab: React.FC = () => {
-
     const[db, setDb] = useState<Database | null>(database);
-    
     const [salaryList, setSalaryList] = useState<any>([]);
     const [currency, setCurrency] = useState<string>("");
     const [trigger, setTrigger] = useState<boolean>(true);
-
     const [updates, setUpdates] = useState<any>(null);
 
     var routerHistory:any = useHistory();
 
-    const ionList:any = useRef();
+    var ref:any = useRef([]);
 
 
     useEffect(()=>{
@@ -37,37 +34,32 @@ const SalaryHistTab: React.FC = () => {
     },[trigger]);
 
     useIonViewDidEnter(()=>{
-        setTrigger(!trigger);
+        getSalaryHistFromDB();
+        getCurrencyFromDB();
     });
+
 
     const addUpateAmount = (idx:any, newAmount:string) => {
         var newUpdates:any = [...updates];
         var amount:number = parseInt(newAmount);
         newUpdates[idx].salary = amount;
-
         setUpdates(newUpdates);
-
     }
 
     const addUpdateDate = (idx:any, newDate:string) => {
         var newUpdates:any = [...updates];
         newUpdates[idx].date = newDate.toLocaleString();
-
         setUpdates(newUpdates);
-        
     }
 
     const addUpdate = (idx:any) => {
-
         var newSalaryList = [...salaryList];
         const updatesList = updates;
-
+        
         newSalaryList[idx] = updatesList[idx];
-        
-        setSalaryList(newSalaryList);
-        
-        db.set("salaries",newSalaryList);
 
+        setSalaryList(newSalaryList);
+        db.set("salaries",newSalaryList);
         setTrigger(!trigger);
 
     }
@@ -93,41 +85,27 @@ const SalaryHistTab: React.FC = () => {
     };
 
     const removeSalary = (idx:number) => {
-
         var newSalaryList = [...salaryList];
         var newUpdatesList = [...updates];
 
-
         newSalaryList.splice(idx,1);
         newUpdatesList.splice(idx,1);
-
+       
         setSalaryList(newSalaryList);
         setUpdates(newUpdatesList);
-
         db.set("salaries",newSalaryList);
-
-        ionList.current.closeSlidingItems();
-
-        setTrigger(false);
-
+        setTrigger(!trigger);
     }
 
     const toggleModifiersVisibility = (idx:string) => {
-       let index:any = document.getElementById(idx);
-       if(index!==null){
-           index.classList.toggle("ion-hide");
-           document.getElementById("button-"+idx)?.classList.toggle("ion-hide");
-       }       
+       ref.current[idx].classList.toggle("ion-hide");
     }
 
     const getSlidingRatio = (e:any,idx:number) => {
-
         var amount:number = e.detail.amount;
-   
         if(amount>158){
           removeSalary(idx);
         }
-        
       }
     
 
@@ -155,7 +133,7 @@ const SalaryHistTab: React.FC = () => {
             </IonHeader>
             <div className="main-app">
                 <IonSearchbar enterkeyhint="enter" placeholder={"Search..."} animated={true} input-mode="text" mode="ios"></IonSearchbar>
-                <IonList mode="ios" lines="none" ref={ionList}>
+                <IonList inset={true} mode="ios" lines="none">
                     {
                         salaryList.map((salary:any, index:any)=>(
                             <IonItemSliding key={index} onIonDrag={(e)=>getSlidingRatio(e,index)}>
@@ -172,8 +150,8 @@ const SalaryHistTab: React.FC = () => {
                                         </IonCardHeader>
                                         <IonCardContent>
                                             Amount : {salary.salary} {currency}
-                                            <IonButton color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}>Edit <IonIcon icon={create}/></IonButton>
-                                            <div className="ion-hide" id={index}>
+                                            <IonButton type="button" color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}> Edit <IonIcon slot="end" icon={create}/></IonButton>
+                                            <div ref={(e)=> ref.current[index]=e} className="ion-hide" id={index}>
                                                 <IonLabel position="stacked">Modify payday: </IonLabel>
                                                 <IonDatetime id={"date-"+index} placeholder={salary.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString())}></IonDatetime>
                                                 <IonLabel position="stacked">Modify amount: </IonLabel>
