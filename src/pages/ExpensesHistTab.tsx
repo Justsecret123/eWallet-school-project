@@ -168,7 +168,7 @@ const ExpensesHistTab: React.FC = () => {
                         <IonItemOptions side="end">
                             <IonItemOption color="danger" onClick={()=>{removeExpense(index)}} expandable>Delete <IonIcon icon={trash}/></IonItemOption>
                         </IonItemOptions>
-                        <IonItem>
+                        <IonItem button>
                           <IonCard mode="ios">
                             <IonCardHeader>
                               <IonCardTitle>{expense.keywords}</IonCardTitle>
