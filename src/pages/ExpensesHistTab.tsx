@@ -1,6 +1,6 @@
 import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { IonItem, IonLabel } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
 import { checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
@@ -11,7 +11,6 @@ const store = new Storage();
 
 var database:any = null;
 
-
 store.create().then(function(result){
   database = result;
 });
@@ -20,6 +19,7 @@ const ExpensesHistTab: React.FC = () => {
 
     const [expenseList, setExpenseList] = useState<any>([]);
     const[db, setDb] = useState<Database | null>(database);
+    const [trigger, setTrigger] = useState<boolean>(true);
 
     const [currency, setCurrency] = useState<string>("");
 
@@ -27,27 +27,27 @@ const ExpensesHistTab: React.FC = () => {
 
     const ionList:any = useRef();
 
-    useEffect(()=>{
-        getExpenseListFromDB();
-        getCurrencyFromDB();
-    });
-    
-    const redirectToAdd = () => {
-        routerHistory.push("/tab2");
-    }
-
     const getExpenseListFromDB = async() => {
-        const val = await db.get("expenses");
-        if(val!==null){
-          setExpenseList(val);
-        }
-    }
+      const val = await db.get("expenses");
+      if(val!==null){
+        setExpenseList(val);
+      }
+    };
 
     const getCurrencyFromDB = async() => {
       const val = await db.get("currency");
         if(val!==null){
             setCurrency(val);
         }
+    };
+
+    useEffect(()=>{
+        getExpenseListFromDB();
+        getCurrencyFromDB();
+    },[trigger]);
+    
+    const redirectToAdd = () => {
+        routerHistory.push("/tab2");
     }
 
     const removeExpense = (idx:number) => {
@@ -59,6 +59,7 @@ const ExpensesHistTab: React.FC = () => {
       db.set("expenses",newExpenseList);
 
       ionList.current.closeSlidingItems();
+      setTrigger(!trigger);
 
     }
 

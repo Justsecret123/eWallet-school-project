@@ -20,6 +20,7 @@ const SalaryHistTab: React.FC = () => {
     const[db, setDb] = useState<Database | null>(database);
     const [salaryList, setSalaryList] = useState<any>([]);
     const [currency, setCurrency] = useState<string>("");
+    const [trigger, setTrigger] = useState<boolean>(true);
 
     const [updates, setUpdates] = useState<any>(null);
 
@@ -30,7 +31,8 @@ const SalaryHistTab: React.FC = () => {
     useEffect(()=>{
         getSalaryHistFromDB();
         getCurrencyFromDB();
-    });
+        console.log("Changed");
+    },[trigger]);
 
     const addUpateAmount = (idx:any, newAmount:string) => {
         var newUpdates:any = [...updates];
@@ -59,6 +61,8 @@ const SalaryHistTab: React.FC = () => {
         setSalaryList(newSalaryList);
         
         db.set("salaries",newSalaryList);
+
+        setTrigger(!trigger);
 
     }
     
@@ -98,6 +102,8 @@ const SalaryHistTab: React.FC = () => {
         db.set("salaries",newSalaryList);
 
         ionList.current.closeSlidingItems();
+
+        setTrigger(!trigger);
 
     }
 
@@ -160,7 +166,7 @@ const SalaryHistTab: React.FC = () => {
                                             </IonCardTitle>
                                         </IonCardHeader>
                                         <IonCardContent>
-                                            Amount : {salary.salary} {currency}<br/><br/>
+                                            Amount : {salary.salary} {currency}
                                             <IonButton color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}>Edit <IonIcon icon={create}/></IonButton>
                                             <div className="ion-hide" id={index}>
                                                 <IonLabel position="stacked">Modify payday: </IonLabel>

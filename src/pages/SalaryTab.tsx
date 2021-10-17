@@ -23,15 +23,18 @@ const SalaryTab: React.FC = () => {
   const [date, setDate] = useState<Date>();
 
   const [isHistEmpty, setIsHistEmpty] = useState<boolean>(true);
+  const [trigger, setTrigger] = useState<boolean>(true);
 
   const [db, setDb] = useState<Database | null>(database);
+  
 
   const routerHistory = useHistory();
 
   useEffect(()=>{
     getSalaryListFromDB();
     setIsHistEmpty(isEmptySalaryList());
-  });
+    console.log("Trigger");
+  },[trigger]);
 
   const getSalaryListFromDB = async() => {
     const val = await db.get("salaries");
@@ -45,6 +48,7 @@ const SalaryTab: React.FC = () => {
 
   const addSalaryToDB = (newSalaryList:any) => {
     db.set("salaries",newSalaryList);
+    setTrigger(!trigger);
   }
 
   const addSalary = () => {
@@ -59,6 +63,8 @@ const SalaryTab: React.FC = () => {
       
       document.getElementById("amount")?.setAttribute("value","");
       document.getElementById("date")?.setAttribute("value","");
+
+      setTrigger(!trigger);
 
     }
 
