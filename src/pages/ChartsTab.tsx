@@ -32,9 +32,6 @@ const ChartsTab: React.FC = () => {
     setTrigger(!trigger);
   })
 
-
-
-
   const getExpenseListFromDB = async() => {
     const val = await db.get("expenses");
     if(val!==null){

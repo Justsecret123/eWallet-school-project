@@ -25,15 +25,12 @@ const ExpensesHistTab: React.FC = () => {
 
     const routerHistory:any = useHistory();
 
-    const [history, setHistory] = useState<any>([]);
-
     const ionList:any = useRef();
 
     const getExpenseListFromDB = async() => {
       const val = await db.get("expenses");
       if(val!==null){
         setExpenseList(val);
-        setHistory(routerHistory);
       }
     };
 

@@ -82,8 +82,6 @@ const SalaryHistTab: React.FC = () => {
         if(val!==null && updates==null){
             setSalaryList(val);
             setUpdates(val);
-        }else if(val!==null && updates!==null){
-            setSalaryList(val);
         }
     };
 
