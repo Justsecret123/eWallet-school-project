@@ -1,7 +1,9 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonItem, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
 import { useEffect, useState } from 'react';
+import { Chart } from "react-google-charts";
 import './charts.css';
+
 
 const store = new Storage();
 var database:any = null; 
@@ -9,6 +11,14 @@ var database:any = null;
 store.create().then(function(result){
   database = result;
 });
+
+const colors:any = {
+  "Housing": "#3dc2ff",
+  "Food": "#3dc2ff", 
+  "Bills": "#2dd36f", 
+  "Clothes": "#ffc409",
+  "Extra": "#eb445a"
+}
 
 const initialTotals:{} = {
   "Housing":0, 
@@ -18,14 +28,42 @@ const initialTotals:{} = {
   "Extra":0
 };
 
+const categoryOptions:{} = {
+  title: "",
+  titleTextStyle: {
+    color: "white"
+  },
+  hAxis: {
+    title: "Category", 
+    titleTextStyle: {
+      color: "white"
+    },
+    textStyle: {
+      color: "white"
+    }
+  }, 
+  vAxis: {
+    minValue: 0, 
+    textStyle: {
+      color: "white"
+    }
+  }, 
+  backgroundColor: "transparent", 
+  charArea: {
+    textStyle: {
+      color: "white"
+    }
+  }, 
+  legend: {position: "none"}
+};
+
 const ChartsTab: React.FC = () => {
   
   const [db, setDb] = useState<Database | null>(database);
-
-  const [history, setHistory] = useState<any>([]);
   
   const [expenseList, setExpenseList] = useState<any>([]);
   const [totalsByCategory, setTotalsByCategory] = useState<{}>(initialTotals);
+  const [categoryCharts, setCategoryCharts] = useState<any>([]);
 
   const [trigger, setTrigger] = useState<boolean>(true);
 
@@ -59,7 +97,12 @@ const ChartsTab: React.FC = () => {
       newTotals[category] += expense.amount;
     });
     setTotalsByCategory(newTotals);
-    console.log("Totals by category: ", newTotals);
+    let data:any = [["Category","Amount", {role: "style"}, {role: "annotation"}]];
+    for (const [key, value] of Object.entries(newTotals)) {
+      data.push([key,value, colors[key], value]);
+    }
+    console.log(data);
+    setCategoryCharts(data);
   };
 
   const getTotalExpensesByMonth = (expenses:any) => {
@@ -85,6 +128,21 @@ const ChartsTab: React.FC = () => {
             <IonTitle size="large">Charts</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <div className="main-app">
+        <h1>Expenses by category</h1>
+          <IonItem>
+            <Chart
+              width={"100%"}
+              height={300}
+              chartType="BarChart"
+              loader={<div>Loading Chart</div>}
+              data = {categoryCharts}
+              options = {categoryOptions}
+
+            >
+            </Chart>
+          </IonItem>
+        </div>
       </IonContent>
     </IonPage>
   );
