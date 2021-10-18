@@ -1,4 +1,4 @@
-import { IonContent, IonDatetime, IonHeader, IonIcon, IonItemOptions, IonItemSliding, IonList, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { IonContent, IonDatetime, IonHeader, IonIcon, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
 import { IonSelect, IonSelectOption, IonButton } from '@ionic/react';
 import { addCircle } from "ionicons/icons";
@@ -14,7 +14,6 @@ var database:any = null;
 store.create().then(function(result){
   database = result;
 });
-
 
 const today = new Date();
 

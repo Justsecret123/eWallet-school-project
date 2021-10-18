@@ -1,11 +1,10 @@
-import {  createRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
 import './expensesHist.css';
 import './salaryHist.css';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter} from '@ionic/react';
 import { calendar, checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
-
 
 const store = new Storage(); 
 
@@ -14,7 +13,6 @@ var database:any = null;
 store.create().then(function(result){
   database = result;
 });
-
 
 const SalaryHistTab: React.FC = () => {
     const[db, setDb] = useState<Database | null>(database);
@@ -106,7 +104,7 @@ const SalaryHistTab: React.FC = () => {
         if(amount>158){
           removeSalary(idx);
         }
-      }
+    }
     
 
     return(

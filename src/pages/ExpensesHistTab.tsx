@@ -1,10 +1,9 @@
-import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewDidLeave } from '@ionic/react';
+import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { IonItem, IonLabel } from '@ionic/react';
-import { createRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Database, Storage } from "@ionic/storage";
 import { useHistory } from 'react-router';
 import { checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
-import { useIonViewWillLeave } from '@ionic/react';
 import './expensesHist.css';
 
 

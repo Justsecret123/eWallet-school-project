@@ -1,7 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
-import { useEffect, useState, useCallback } from 'react';
-import { useHistory } from 'react-router';
+import { useEffect, useState } from 'react';
 import './charts.css';
 
 const store = new Storage();
@@ -11,16 +10,22 @@ store.create().then(function(result){
   database = result;
 });
 
+const initialTotals:{} = {
+  "Housing":0, 
+  "Food":0, 
+  "Bills":0, 
+  "Clothes":0, 
+  "Extra":0
+};
 
 const ChartsTab: React.FC = () => {
   
   const [db, setDb] = useState<Database | null>(database);
 
-  const routerHistory = useHistory();
   const [history, setHistory] = useState<any>([]);
   
   const [expenseList, setExpenseList] = useState<any>([]);
-  const [totalsByCategory, setTotalsByCategory] = useState<any>({"Housing":0, "Food":0, "Bills":0, "Clothes":0, "Extra":0});
+  const [totalsByCategory, setTotalsByCategory] = useState<{}>(initialTotals);
 
   const [trigger, setTrigger] = useState<boolean>(true);
 
@@ -29,7 +34,7 @@ const ChartsTab: React.FC = () => {
   },[trigger]);
 
   useIonViewDidEnter(()=>{
-    setTrigger(!trigger);
+    getExpenseListFromDB();
   })
 
   const getExpenseListFromDB = async() => {
@@ -37,13 +42,18 @@ const ChartsTab: React.FC = () => {
     if(val!==null){
       setExpenseList(val);
       getTotalExpensesByCategory(val);
-      setHistory(routerHistory);
+      getTotalExpensesByMonth(val);
     }
   };
 
-  const getTotalExpensesByCategory = async(expenses:any) => {
-    console.log("Expenses: ", expenses);
-    var newTotals:any = totalsByCategory;
+  const getTotalExpensesByCategory = (expenses:any) => {
+    const newTotals:any = {
+      "Housing":0, 
+      "Food":0, 
+      "Bills":0, 
+      "Clothes":0, 
+      "Extra":0
+    };
     expenses.map((expense:any)=>{
       let category = expense.category;
       newTotals[category] += expense.amount;
@@ -51,6 +61,14 @@ const ChartsTab: React.FC = () => {
     setTotalsByCategory(newTotals);
     console.log("Totals by category: ", newTotals);
   };
+
+  const getTotalExpensesByMonth = (expenses:any) => {
+    const newTotals:any = {"0":0, "1":0, "2":0, "3":0, "4":0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0};
+    expenses.map((expense:any)=>{
+      let date:Date = new Date(expense.date);
+      console.log("Month: ", date.getMonth());
+    });
+  }
 
 
 
