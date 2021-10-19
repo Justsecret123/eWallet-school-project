@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "Ewallet",
+	"appName": "eWallet",
 	"webDir": "build",
 	"bundledWebRuntime": false
 }

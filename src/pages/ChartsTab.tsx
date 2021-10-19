@@ -1,12 +1,13 @@
-import { IonContent, IonHeader, IonItem, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonItem, IonPage, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Chart } from "react-google-charts";
 import './charts.css';
 
 
 const store = new Storage();
 var database:any = null; 
+const expenses:any = [];
 
 store.create().then(function(result){
   database = result;
@@ -172,47 +173,55 @@ const ChartsTab: React.FC = () => {
   
   const [expenseList, setExpenseList] = useState<any>([]);
   const [salaryList, setSalaryList] = useState<any>([]);
-  const [totalsByCategory, setTotalsByCategory] = useState<{}>(initialTotals);
   const [categoryCharts, setCategoryCharts] = useState<any>([]);
   const [monthCharts, setMonthCharts] = useState<any>([]);
   const [salaryCharts, setSalaryCharts] = useState<any>([]);
   const [trigger, setTrigger] = useState<boolean>(true);
 
-  useEffect(()=>{
-    getExpenseListFromDB();
-    getSalaryListFromDB();
-  },[]);
+  const [counter, setCounter] = useState<number>(0);
 
-  useEffect(()=>{
-    getExpenseListFromDB();
-    getSalaryListFromDB();
-  },[trigger]);
+  var refs:any = useRef([]);
 
   useIonViewDidEnter(()=>{
     getExpenseListFromDB();
     getSalaryListFromDB();
-  })
+  });
 
-  const getExpenseListFromDB = async() => {
-    const val = await db.get("expenses");
-    if(val!==null){
-      setExpenseList(val);
-      getTotalExpensesByCategory(val);
-      getTotalExpensesByMonth(val);
-    }else{
-      getTotalExpensesByCategory([]);
-      getTotalExpensesByMonth([]);  
+  useEffect(()=>{
+    console.log("Hum");
+    if(expenseList.length!==0&&salaryList.length!==0){
+      console.log("Là, c'est la bonne!");
+      console.log(refs.current);
+      setTrigger(false);
     }
+  },[expenseList, salaryList]);
+
+  useEffect(()=>{
+    console.log("Trigger == false ?: ", trigger==false);
+  },[trigger]);
+
+
+  const getExpenseListFromDB = () => {
+    
+    db.get("expenses")
+    .then((val:any)=>{
+      if(val!==null){
+        setExpenseList(val);
+        getTotalExpensesByCategory(val);
+        getTotalExpensesByMonth(val);
+      }
+    }).finally(()=>{return});
+
   };
 
-  const getSalaryListFromDB = async() => {
-    const val = await db.get("salaries");
-    if(val!==null){
-      setSalaryList(val);
-      getTotalSalaryByMonth(val);
-    }else{
-      getTotalSalaryByMonth([]);
-    }
+  const getSalaryListFromDB = () => {
+    db.get("salaries")
+    .then((val:any)=>{
+      if(val!==null){
+        setSalaryList(val);
+        getTotalSalaryByMonth(val);
+      }
+    }).finally(()=>{return});
   };
 
   const getTotalExpensesByCategory = (expenses:any) => {
@@ -227,7 +236,6 @@ const ChartsTab: React.FC = () => {
       let category = expense.category;
       newTotals[category] += expense.amount;
     });
-    setTotalsByCategory(newTotals);
     let data:any = [["Category","Amount", {role: "style"}, {role: "annotation"}]];
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([key,value, categoryColors[key], value]);
@@ -245,7 +253,7 @@ const ChartsTab: React.FC = () => {
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([monthNames[key],value, monthColors[key], value]);
     }
-    setMonthCharts(data);
+    setMonthCharts(data.slice(0,12));
   }
 
   const getTotalSalaryByMonth = (salaries:any) => {
@@ -258,7 +266,7 @@ const ChartsTab: React.FC = () => {
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([monthNames[key],value,value]);
     }
-    setSalaryCharts(data);
+    setSalaryCharts(data.slice(0,12));
   }
 
 
@@ -277,41 +285,36 @@ const ChartsTab: React.FC = () => {
         </IonHeader>
         <div className="main-app">
           <h1>Expenses by category</h1>
-          <IonItem lines="none">
             <Chart
+              ref={(e)=>{ refs.current[0] = e}}
+              
               width={"100%"}
               height={250}
               chartType="BarChart"
               loader={<div>Loading Chart</div>}
               data = {categoryCharts}
               options = {categoryOptions}
-            >
-            </Chart>
-          </IonItem >
+            />
           <h1>Expenses by month</h1>
-          <IonItem lines="none">
             <Chart
-                width={"100%"}
-                height={280}
-                chartType="ColumnChart"
-                loader={<div>Loading Chart</div>}
-                data = {monthCharts}
-                options = {monthOptions}
-              >
-              </Chart>
-          </IonItem>
+              ref={(e)=>{ refs.current[1] = e}}
+              width={"100%"}
+              height={280}
+              chartType="ColumnChart"
+              loader={<div>Loading Chart</div>}
+              data = {trigger==false? monthCharts:[]}
+              options = {monthOptions}
+              />
           <h1> Salary by month</h1>
-          <IonItem lines="none">
             <Chart
-                  width={"100%"}
-                  height={200}
-                  chartType="LineChart"
-                  loader={<div>Loading Chart</div>}
-                  data = {salaryCharts}
-                  options = {salaryOptions}
-                >
-              </Chart>            
-          </IonItem>
+              ref={(e)=>{ refs.current[2] = e}}
+              width={"100%"}
+              height={200}
+              chartType="LineChart"
+              loader={<div>Loading Chart</div>}
+              data = {trigger==false? salaryCharts:[]}
+              options = {salaryOptions}
+            />
         </div>
       </IonContent>
     </IonPage>
