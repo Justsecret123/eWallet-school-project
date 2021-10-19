@@ -178,6 +178,10 @@ const ChartsTab: React.FC = () => {
   const [salaryCharts, setSalaryCharts] = useState<any>([]);
   const [trigger, setTrigger] = useState<boolean>(true);
 
+  useEffect(()=>{
+    getExpenseListFromDB();
+    getSalaryListFromDB();
+  },[]);
 
   useEffect(()=>{
     getExpenseListFromDB();
@@ -233,7 +237,7 @@ const ChartsTab: React.FC = () => {
 
   const getTotalExpensesByMonth = (expenses:any) => {
     const newTotals:any = {"0":0, "1":0, "2":0, "3":0, "4":0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0};
-    expenses.map((expense:any, index:number)=>{
+    expenses.map((expense:any)=>{
       let month:string = new Date(expense.date).getMonth().toString();
       newTotals[month] += expense.amount;
     });
