@@ -83,7 +83,7 @@ const categoryOptions:{} = {
     textStyle: {
       color: "white"
     }, 
-    width: "80%"
+    width: "75%"
   }, 
   legend: {position: "none"}
 };
