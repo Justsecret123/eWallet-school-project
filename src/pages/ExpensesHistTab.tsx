@@ -179,7 +179,7 @@ const ExpensesHistTab: React.FC = () => {
                               <IonButton color="secondary" id={"button-"+index} slot="end" onClick={()=>toggleModifiersVisibility(index)}>Edit <IonIcon icon={create}/></IonButton> 
                               <div ref={(e)=> ref.current[index]=e} className="ion-hide" id={index}>
                                 <IonLabel position="stacked">Modify date: </IonLabel>
-                                <IonDatetime placeholder={expense.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString())}></IonDatetime>
+                                <IonDatetime placeholder={expense.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString("en"))}></IonDatetime>
                                 <IonLabel position="stacked">Keywords</IonLabel>
                                 <IonInput placeholder={expense.keywords} onIonChange={e=>addUpateKeywords(index,e.detail.value!)}></IonInput> 
                                 <IonLabel position="stacked">Modify amount: </IonLabel>

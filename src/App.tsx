@@ -35,7 +35,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import SalaryHistTab from './pages/SalaryHistTab';
-import ChartsTab from './pages/ChartsTab';
+import ByCategoryTab from './pages/ByCategoryTab';
+import ByPeriodTab from './pages/ByPeriodTab';
 
 const App: React.FC = () => {
   
@@ -51,11 +52,14 @@ const App: React.FC = () => {
             <ExpensesTab />
           </Route>
           <Route path="/tab3">
-            <ChartsTab />
+            <ByCategoryTab />
           </Route>
           <Route exact path="/tab4">
             <SettingsTab />
           </Route>
+          <Route exact path="/tab5">
+            <ByPeriodTab />
+          </Route>        
           <Route exact path="/expensesHist">
             <ExpensesHistTab />
           </Route>

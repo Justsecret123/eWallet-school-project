@@ -1,13 +1,12 @@
 import { IonContent, IonHeader, IonItem, IonPage, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Chart } from "react-google-charts";
 import './charts.css';
 
 
 const store = new Storage();
 var database:any = null; 
-const expenses:any = [];
 
 store.create().then(function(result){
   database = result;
@@ -171,16 +170,12 @@ const ChartsTab: React.FC = () => {
   
   const [db, setDb] = useState<Database | null>(database);
   
-  const [expenseList, setExpenseList] = useState<any>([]);
-  const [salaryList, setSalaryList] = useState<any>([]);
+  const [expenseList, setExpenseList] = useState<any>([0]);
+  const [salaryList, setSalaryList] = useState<any>([0]);
   const [categoryCharts, setCategoryCharts] = useState<any>([]);
   const [monthCharts, setMonthCharts] = useState<any>([]);
   const [salaryCharts, setSalaryCharts] = useState<any>([]);
   const [trigger, setTrigger] = useState<boolean>(true);
-
-  const [counter, setCounter] = useState<number>(0);
-
-  var refs:any = useRef([]);
 
   useIonViewDidEnter(()=>{
     getExpenseListFromDB();
@@ -188,10 +183,12 @@ const ChartsTab: React.FC = () => {
   });
 
   useEffect(()=>{
-    console.log("Hum");
-    if(expenseList.length!==0&&salaryList.length!==0){
+    console.log("E-List: ", expenseList);
+    console.log("S-list: ", salaryList);
+    if(expenseList!==[0]&&salaryList.length!==[0]){
+      console.log("Expense list: ", expenseList);
+      console.log("Salary list: ", salaryList);
       console.log("Là, c'est la bonne!");
-      console.log(refs.current);
       setTrigger(false);
     }
   },[expenseList, salaryList]);
@@ -209,8 +206,10 @@ const ChartsTab: React.FC = () => {
         setExpenseList(val);
         getTotalExpensesByCategory(val);
         getTotalExpensesByMonth(val);
+      }else{
+        setExpenseList([]);
       }
-    }).finally(()=>{return});
+    });
 
   };
 
@@ -220,8 +219,11 @@ const ChartsTab: React.FC = () => {
       if(val!==null){
         setSalaryList(val);
         getTotalSalaryByMonth(val);
+      }else{
+        setSalaryList([]);
       }
-    }).finally(()=>{return});
+    });
+
   };
 
   const getTotalExpensesByCategory = (expenses:any) => {
@@ -286,8 +288,6 @@ const ChartsTab: React.FC = () => {
         <div className="main-app">
           <h1>Expenses by category</h1>
             <Chart
-              ref={(e)=>{ refs.current[0] = e}}
-              
               width={"100%"}
               height={250}
               chartType="BarChart"
@@ -297,22 +297,20 @@ const ChartsTab: React.FC = () => {
             />
           <h1>Expenses by month</h1>
             <Chart
-              ref={(e)=>{ refs.current[1] = e}}
               width={"100%"}
               height={280}
               chartType="ColumnChart"
               loader={<div>Loading Chart</div>}
-              data = {trigger==false? monthCharts:[]}
+              data = {JSON.stringify(monthCharts)!==JSON.stringify([0])? monthCharts:[]}
               options = {monthOptions}
-              />
+            />
           <h1> Salary by month</h1>
             <Chart
-              ref={(e)=>{ refs.current[2] = e}}
               width={"100%"}
               height={200}
               chartType="LineChart"
               loader={<div>Loading Chart</div>}
-              data = {trigger==false? salaryCharts:[]}
+              data = {JSON.stringify(salaryCharts)!==JSON.stringify([0])? salaryCharts:[]}
               options = {salaryOptions}
             />
         </div>

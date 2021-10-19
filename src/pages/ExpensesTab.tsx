@@ -54,7 +54,7 @@ const ExpensesTab: React.FC = () => {
 
   const addExpense = () => {
     if(amount>0 && category!==""){
-      let newExpense:any = {"amount": amount, "date": date?.toLocaleDateString(), "category": category, "keywords": keywords};
+      let newExpense:any = {"amount": amount, "date": date?.toLocaleDateString("en"), "category": category, "keywords": keywords};
       let newExpenseList:any = [...expenseList];
 
       newExpenseList.push(newExpense);
@@ -100,7 +100,7 @@ const ExpensesTab: React.FC = () => {
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Date</IonLabel>
-            <IonDatetime mode="ios" placeholder={today.toLocaleDateString()} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
+            <IonDatetime mode="ios" placeholder={today.toLocaleDateString("en")} onIonChange={e => setDate(new Date(e.detail.value!))}></IonDatetime>
           </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Category</IonLabel>

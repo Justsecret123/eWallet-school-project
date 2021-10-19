@@ -151,7 +151,7 @@ const SalaryHistTab: React.FC = () => {
                                             <IonButton type="button" color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}> Edit <IonIcon slot="end" icon={create}/></IonButton>
                                             <div ref={(e)=> ref.current[index]=e} className="ion-hide" id={index}>
                                                 <IonLabel position="stacked">Modify payday: </IonLabel>
-                                                <IonDatetime id={"date-"+index} placeholder={salary.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString())}></IonDatetime>
+                                                <IonDatetime id={"date-"+index} placeholder={salary.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString("en"))}></IonDatetime>
                                                 <IonLabel position="stacked">Modify amount: </IonLabel>
                                                 <IonInput id={"input-"+index} type="number" onIonChange={e=>addUpateAmount(index,e.detail.value!)} placeholder={salary.salary}></IonInput>
                                                 <IonButton  color="secondary" onClick={()=>addUpdate(index)}>Confirm <IonIcon icon={checkmarkCircle}/> </IonButton>
