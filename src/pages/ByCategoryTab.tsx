@@ -1,6 +1,6 @@
-import { IonContent, IonHeader, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
 import { useHistory } from 'react-router';
 import './charts.css';
