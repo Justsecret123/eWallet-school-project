@@ -82,7 +82,8 @@ const categoryOptions:{} = {
   chartArea: {
     textStyle: {
       color: "white"
-    }
+    }, 
+    width: "80%"
   }, 
   legend: {position: "none"}
 };
@@ -110,10 +111,11 @@ const monthOptions:{} = {
     }
   }, 
   backgroundColor: "transparent", 
-  charArea: {
+  chartArea: {
     textStyle: {
       color: "white"
-    }
+    }, 
+    width: "80%"
   }, 
   legend: {position: "none"}
 };
@@ -153,7 +155,8 @@ const salaryOptions:{} = {
   chartArea: {
     textStyle: {
       color: "white"
-    }
+    }, 
+    width: "80%"
   }, 
   annotations: {
     textStyle: {
@@ -173,8 +176,8 @@ const ChartsTab: React.FC = () => {
   const [categoryCharts, setCategoryCharts] = useState<any>([]);
   const [monthCharts, setMonthCharts] = useState<any>([]);
   const [salaryCharts, setSalaryCharts] = useState<any>([]);
-
   const [trigger, setTrigger] = useState<boolean>(true);
+
 
   useEffect(()=>{
     getExpenseListFromDB();
@@ -192,6 +195,9 @@ const ChartsTab: React.FC = () => {
       setExpenseList(val);
       getTotalExpensesByCategory(val);
       getTotalExpensesByMonth(val);
+    }else{
+      getTotalExpensesByCategory([]);
+      getTotalExpensesByMonth([]);  
     }
   };
 
@@ -199,7 +205,8 @@ const ChartsTab: React.FC = () => {
     const val = await db.get("salaries");
     if(val!==null){
       setSalaryList(val);
-      getTotalSalaryByMonth(val);
+    }else{
+      getTotalSalaryByMonth([]);
     }
   };
 
