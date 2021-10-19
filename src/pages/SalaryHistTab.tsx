@@ -23,7 +23,7 @@ const SalaryHistTab: React.FC = () => {
 
     var routerHistory:any = useHistory();
 
-    var ref:any = useRef([]);
+    var refs:any = useRef([]);
 
 
     useEffect(()=>{
@@ -96,13 +96,16 @@ const SalaryHistTab: React.FC = () => {
     }
 
     const toggleModifiersVisibility = (idx:string) => {
-       ref.current[idx].classList.toggle("ion-hide");
+       refs.current[idx].classList.toggle("ion-hide");
     }
 
     const getSlidingRatio = (e:any,idx:number) => {
         var amount:number = e.detail.amount;
         if(amount>158){
           removeSalary(idx);
+          if(!refs.current.slider){
+              refs.current.slider.closeSlidingItems();
+          }
         }
     }
     
@@ -131,7 +134,7 @@ const SalaryHistTab: React.FC = () => {
             </IonHeader>
             <div className="main-app">
                 <IonSearchbar enterkeyhint="enter" placeholder={"Search..."} animated={true} input-mode="text" mode="ios"></IonSearchbar>
-                <IonList inset={true} mode="ios" lines="none">
+                <IonList ref={(e)=> {refs.current.slider=e}} inset={true} mode="ios" lines="none">
                     {
                         salaryList.map((salary:any, index:any)=>(
                             <IonItemSliding key={index} onIonDrag={(e)=>getSlidingRatio(e,index)}>
@@ -149,7 +152,7 @@ const SalaryHistTab: React.FC = () => {
                                         <IonCardContent>
                                             Amount : {salary.salary} {currency}
                                             <IonButton type="button" color="secondary" id={"button-"+index} onClick={()=>toggleModifiersVisibility(index)}> Edit <IonIcon slot="end" icon={create}/></IonButton>
-                                            <div ref={(e)=> ref.current[index]=e} className="ion-hide" id={index}>
+                                            <div ref={(e)=> refs.current[index]=e} className="ion-hide" id={index}>
                                                 <IonLabel position="stacked">Modify payday: </IonLabel>
                                                 <IonDatetime id={"date-"+index} placeholder={salary.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString("en"))}></IonDatetime>
                                                 <IonLabel position="stacked">Modify amount: </IonLabel>

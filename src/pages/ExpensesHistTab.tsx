@@ -24,7 +24,7 @@ const ExpensesHistTab: React.FC = () => {
   const [updates, setUpdates] = useState<any>([]);
 
   const routerHistory:any = useHistory();
-  const ref:any = useRef([]);
+  const refs:any = useRef([]);
 
 
   const getExpenseListFromDB = async() => {
@@ -70,13 +70,16 @@ const ExpensesHistTab: React.FC = () => {
   }
 
   const toggleModifiersVisibility = (idx:string) => {
-    ref.current[idx].classList.toggle("ion-hide");
+    refs.current[idx].classList.toggle("ion-hide");
   }
 
   const getSlidingRatio = (e:any,idx:number) => {
     var amount:number = e.detail.amount;
     if(amount>158){
       removeExpense(idx);
+      if(!refs.current.slider){
+        refs.current.slider.closeSlidingItems();
+      }
     }
   }
 
@@ -160,7 +163,7 @@ const ExpensesHistTab: React.FC = () => {
 
         <div className="main-app">
             <IonSearchbar enterkeyhint="enter" placeholder={"Search..."} animated={true} input-mode="text" mode="ios"></IonSearchbar>
-            <IonList inset={true} mode="ios" lines="none">
+            <IonList ref={(e)=> {refs.current.slider=e}} inset={true} mode="ios" lines="none">
             {
                 expenseList.map((expense:any, index:any)=>(
                     <IonItemSliding key={index}  onIonDrag={(e)=>getSlidingRatio(e,index)}>
@@ -177,7 +180,7 @@ const ExpensesHistTab: React.FC = () => {
                               <IonText>{expense.amount + " " + currency}</IonText> 
                               <IonBadge color={setColor(expense.category)} mode="ios">{expense.category}</IonBadge> 
                               <IonButton color="secondary" id={"button-"+index} slot="end" onClick={()=>toggleModifiersVisibility(index)}>Edit <IonIcon icon={create}/></IonButton> 
-                              <div ref={(e)=> ref.current[index]=e} className="ion-hide" id={index}>
+                              <div ref={(e)=> refs.current[index]=e} className="ion-hide" id={index}>
                                 <IonLabel position="stacked">Modify date: </IonLabel>
                                 <IonDatetime placeholder={expense.date} onIonChange={e=>addUpdateDate(index,new Date(e.detail.value!).toLocaleDateString("en"))}></IonDatetime>
                                 <IonLabel position="stacked">Keywords</IonLabel>
