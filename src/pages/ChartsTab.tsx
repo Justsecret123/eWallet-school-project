@@ -205,6 +205,7 @@ const ChartsTab: React.FC = () => {
     const val = await db.get("salaries");
     if(val!==null){
       setSalaryList(val);
+      getTotalSalaryByMonth(val);
     }else{
       getTotalSalaryByMonth([]);
     }
