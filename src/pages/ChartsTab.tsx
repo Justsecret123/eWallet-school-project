@@ -296,7 +296,7 @@ const ChartsTab: React.FC = () => {
               >
               </Chart>
           </IonItem>
-          <h1> Salary history by month </h1>
+          <h1> Salary by month</h1>
           <IonItem lines="none">
             <Chart
                   width={"100%"}
