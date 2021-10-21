@@ -46,4 +46,8 @@ ion-title {
     position: relative;
 }
 
+div #select-period {
+    width: 100%!important;
+}
+
 

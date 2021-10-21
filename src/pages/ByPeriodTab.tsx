@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
 import { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
@@ -21,6 +21,7 @@ const ByPeriodTab: React.FC = () => {
   const [expenseList, setExpenseList] = useState<any>([0]);
   const [monthCharts, setMonthCharts] = useState<any>([]);
   const [salaryMonthCharts, setSalaryMonthCharts] = useState<any>([]);
+  const [selectedOption, setSelectedOption] = useState<string>("month");
   const [trigger, setTrigger] = useState<boolean>(true);
 
   var routerHistory:any = useHistory();
@@ -103,6 +104,12 @@ const ByPeriodTab: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <div className="main-app">
+          <IonItem id="select-period" lines="none">
+            <IonSelect placeholder={"Show stats by..."} mode="ios">
+              <IonSelectOption>Month</IonSelectOption>
+              <IonSelectOption>Year</IonSelectOption>
+            </IonSelect>
+          </IonItem>
           <h1> Expenses by month  </h1>
             <Chart
               width={"100%"}
