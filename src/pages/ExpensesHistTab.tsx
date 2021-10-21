@@ -42,15 +42,15 @@ const ExpensesHistTab: React.FC = () => {
       }
   };
 
-  useEffect(()=>{
-    getExpenseListFromDB();
-    getCurrencyFromDB();
-  },[trigger]);
-
   useIonViewDidEnter(()=>{
     getExpenseListFromDB();
     getCurrencyFromDB();
   });
+
+  useEffect(()=>{
+    getExpenseListFromDB();
+    getCurrencyFromDB();
+  },[trigger]);
 
     
   const redirectToAdd = () => {

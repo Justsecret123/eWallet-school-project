@@ -1,7 +1,8 @@
-import { IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
 import { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
+import { monthColors, monthNames, monthOptions } from '../months';
 import { useHistory } from 'react-router';
 import './charts.css';
 
@@ -13,69 +14,6 @@ store.create().then(function(result){
   database = result;
 });
 
-const monthNames:any = {
-    "0": "Jan",
-    "1": "Fev", 
-    "2": "Mar", 
-    "3": "Apr",
-    "4": "May", 
-    "5": "Jun", 
-    "6": "Jul", 
-    "7": "Aug", 
-    "8": "Sep",
-    "9": "Oct",
-    "10": "Nov",
-    "11": "Dec"
-  };
-
-  const monthColors:any = {
-    "0": "#3dc2ff",
-    "1": "#3dc2ff", 
-    "2": "#2dd36f", 
-    "3": "#ffc409",
-    "4": "#eb445a", 
-    "5": "#92949c", 
-    "6": "#f4f5f8", 
-    "7": "#5260ff", 
-    "8": "#3dc2ff",
-    "9": "#3dc2ff",
-    "10": "#2dd36f",
-    "11": "#ffc409"
-  }
-  
-
-  const monthOptions:{} = {
-    title: "",
-    titleTextStyle: {
-      color: "white"
-    },
-    hAxis: {
-      slantedText:true,
-      slantedTextAngle:45,
-      title: "Month", 
-      titleTextStyle: {
-        color: "white"
-      },
-      textStyle: {
-        color: "white"
-      }
-    }, 
-    vAxis: {
-      minValue: 0, 
-      textStyle: {
-        color: "white"
-      }
-    }, 
-    backgroundColor: "transparent", 
-    chartArea: {
-      textStyle: {
-        color: "white"
-      }, 
-      width: "80%"
-    }, 
-    legend: {position: "none"}
-  };
-
 const ByPeriodTab: React.FC = () => {
   
   const [db, setDb] = useState<Database | null>(database);
@@ -86,8 +24,8 @@ const ByPeriodTab: React.FC = () => {
 
   var routerHistory:any = useHistory();
 
-  useIonViewDidEnter(async()=>{
-    await getExpenseListFromDB();
+  useIonViewDidEnter(()=>{
+    getExpenseListFromDB();
   });
 
   useEffect(()=>{
@@ -96,25 +34,23 @@ const ByPeriodTab: React.FC = () => {
     }
   },[expenseList]);
 
-  useEffect(()=>{
-  },[trigger]);
-
-
   const getExpenseListFromDB = async() => {
     
     const val:any = await db.get("expenses");
     if(val!==null){
-        await getTotalExpensesByMonth(val);
-      }else{
-        setExpenseList([]);
-      }
+      setExpenseList(val);
+      getTotalExpensesByMonth(val);
+    }else{
+      setExpenseList([]);
+    }
+
   };
 
-  const getTotalExpensesByMonth = async(expenses:any) => {
+  const getTotalExpensesByMonth = (expenses:any) => {
     let newTotals:any = {"0":0, "1":0, "2":0, "3":0, "4":0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0};
     expenses.map((expense:any)=>{
       let month:any = expense.date.split("/")[0];
-      newTotals[month] += expense.amount;
+      newTotals[month-1] += expense.amount;
     });
     let data:any = [["Month","Amount", {role: "style"}, {role: "annotation"}]];
     for (const [key, value] of Object.entries(newTotals)) {
@@ -122,7 +58,6 @@ const ByPeriodTab: React.FC = () => {
     }
     setMonthCharts(data.slice(0,13));
     setExpenseList(expenses);
-    console.log(data.slice(0,13));
   }
 
   const redirectToCategory = () => {

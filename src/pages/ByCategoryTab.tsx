@@ -1,8 +1,9 @@
-import { IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
 import { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
 import { useHistory } from 'react-router';
+import { categoryColors, categoryOptions } from '../category';
 import './charts.css';
 
 
@@ -12,44 +13,6 @@ var database:any = null;
 store.create().then(function(result){
   database = result;
 });
-
-const categoryColors:any = {
-  "Housing": "#3dc2ff",
-  "Food": "#3dc2ff", 
-  "Bills": "#2dd36f", 
-  "Clothes": "#ffc409",
-  "Extra": "#eb445a"
-}
-
-const categoryOptions:{} = {
-  title: "",
-  titleTextStyle: {
-    color: "white"
-  },
-  hAxis: {
-    title: "Category", 
-    titleTextStyle: {
-      color: "white"
-    },
-    textStyle: {
-      color: "white"
-    }
-  }, 
-  vAxis: {
-    minValue: 0, 
-    textStyle: {
-      color: "white"
-    }
-  }, 
-  backgroundColor: "transparent", 
-  chartArea: {
-    textStyle: {
-      color: "white"
-    }, 
-    width: "75%"
-  }, 
-  legend: {position: "none"}
-};
 
 const ByCategoryTab: React.FC = () => {
   
@@ -71,21 +34,15 @@ const ByCategoryTab: React.FC = () => {
     }
   },[expenseList]);
 
-  useEffect(()=>{
-  },[trigger]);
-
-
-  const getExpenseListFromDB = () => {
+  const getExpenseListFromDB = async() => {
     
-    db.get("expenses")
-    .then((val:any)=>{
-      if(val!==null){
+    var val:any = await db.get("expenses");
+    if(val!==null){
         setExpenseList(val);
         getTotalExpensesByCategory(val);
       }else{
         setExpenseList([]);
       }
-    });
 
   };
 

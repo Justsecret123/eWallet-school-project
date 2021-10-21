@@ -4,7 +4,6 @@ import "./settings.css";
 import { currency_list } from "../currencies";
 import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
-import { useHistory } from "react-router";
 
 const currencies = currency_list;
 const store = new Storage();
@@ -16,7 +15,7 @@ store.create().then(function(result){
 });
 
 const SettingsTab: React.FC = () => {
-
+    
     const [username, setUsername] = useState<string>("");
     const [currency, setCurrency] = useState<string>("");
 
@@ -27,25 +26,20 @@ const SettingsTab: React.FC = () => {
 
     const [db, setDb] = useState<Database | null>(database);
 
-    const history = useHistory();
-
-
+    useIonViewDidEnter(()=>{
+        getUser();
+        getCurrency();
+    });
 
     useEffect(() => {
         getUser();
         getCurrency();
     },[trigger]);
 
-    useIonViewDidEnter(()=>{
-        setTrigger(!trigger);
-    })
-
     const getUser = async() => {
         const val = await db.get("username");
         if(val!==null){
             setUsername(val);
-        }else{
-            setUsername("");
         }
     }
 
@@ -53,8 +47,6 @@ const SettingsTab: React.FC = () => {
         const val = await db.get("currency");
         if(val!==null){
             setCurrency(val);
-        }else{
-            setCurrency("");
         }
     }
 
@@ -62,32 +54,26 @@ const SettingsTab: React.FC = () => {
         if(modifiedUsername == "" && selectedCurrency!==""){
 
             setCurrency(selectedCurrency);
-            db.set("currency",selectedCurrency);
             document.getElementById("currency")?.setAttribute("value","");
-
+            db.set("currency",selectedCurrency);
             setTrigger(!trigger);
 
         }else if(selectedCurrency=="" && modifiedUsername!==""){
-
-            setUsername(modifiedUsername);
-            db.set("username",modifiedUsername);
             document.getElementById("username")?.setAttribute("value","");
-
+            db.set("username",modifiedUsername);
+            setUsername(modifiedUsername);
             setTrigger(!trigger);
 
         }else{
 
-            setUsername(modifiedUsername);
-            setCurrency(selectedCurrency);
-
-            db.set("username",modifiedUsername);
-            db.set("currency", selectedCurrency);
-
             document.getElementById("username")?.setAttribute("value","");
             document.getElementById("currency")?.setAttribute("value","");
-
+            db.set("username",modifiedUsername);
+            db.set("currency", selectedCurrency);
+            setUsername(modifiedUsername);
+            setCurrency(selectedCurrency);
             setTrigger(!trigger);
-
+            
         }
     }
 
@@ -108,7 +94,7 @@ const SettingsTab: React.FC = () => {
                 <div className="main-app">
                     <IonItem>
                         <IonLabel position="stacked" className="labels">Change username</IonLabel>
-                        <IonInput id="username" type="text" placeholder={username + "..."}  onIonChange={e => setModifiedUsername(e.detail.value!)} minlength={4}></IonInput>
+                        <IonInput id="username" type="text" placeholder={username + "..."}  onIonChange={e => setModifiedUsername(e.detail.value!)}></IonInput>
                     </IonItem>
                     <IonItem>
                         <IonLabel position="stacked" className="labels">Change currency</IonLabel>
