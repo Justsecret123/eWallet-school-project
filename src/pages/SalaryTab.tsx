@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 import { IonDatetime } from '@ionic/react';
 import { addCircle } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
@@ -11,13 +11,15 @@ var database:any = null;
 
 store.create().then(function(result){
   database = result;
-})
+});
 
 const today = new Date();
 
 const SalaryTab: React.FC = () => {
 
-  const [salaryList, setSalaryList] = useState<any>([]);
+  const [salaryList, setSalaryList] = useState<any>([]);  
+  const [balance, setBalance] = useState<number>(-1);
+  const [currency, setCurrency] = useState<string>("");
 
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<Date>();
@@ -28,24 +30,66 @@ const SalaryTab: React.FC = () => {
 
   const routerHistory = useHistory();
 
+  useIonViewWillEnter(()=>{
+    getSalaryListAndBalance();
+  });
+  
   useEffect(()=>{
-      getSalaryListFromDB();
+    getSalaryListAndBalance();
   },[trigger]);
 
-  useIonViewWillEnter(()=>{
-    setTrigger(!trigger);
-  });
+  const getSalaryListAndBalance = async() => {
+    const salaries = await db.get("salaries");
+    const expenses = await db.get("expenses");
+    const current_currency =  await db.get("currency");
+    if(salaries!==null && expenses!==null){
+      setSalaryList(salaries);
+      let cmSalaries = getCurrentMonthSalaries(salaries);
+      let cmExpenses = getCurrentMonthExpenses(expenses);
+      console.log("Balance: ", cmSalaries-cmExpenses);
+      setBalance(cmSalaries-cmExpenses);
+      setCurrency(current_currency==null ? "":current_currency);
+    }else{
+      setSalaryList([]);
+    }
+}
 
-  const getSalaryListFromDB = async() => {
-      const val = await db.get("salaries");
-      if(val!==null){
-        setSalaryList(val);
-      }else{
-        setSalaryList([]);
+  const getCurrentMonthSalaries = (salaries:any) => {
+    let total:number = 0;
+    let current_month:number = today.getMonth()+1;
+    let current_day:number = today.getDate();
+    let current_year:number = today.getFullYear();
+    salaries.map((salary:any)=>{
+      let month:number = parseInt(salary.date.split("/")[0]);
+      let day:number = parseInt(salary.date.split("/")[1]);
+      let year:number = parseInt(salary.date.split("/")[2]);
+      if(year===current_year && month===current_month && day<=current_day){
+        total+=salary.salary;
       }
-  }
-  
+    });
+    console.log("Salaries: ", total);
+    return total;
+  };
 
+  const getCurrentMonthExpenses = (expenses:any) => {
+    let total:number = 0;
+    let current_month:number = today.getMonth()+1;
+    let current_day:number = today.getDate();
+    let current_year:number = today.getFullYear();
+    expenses.map((expense:any)=>{
+      let date:any = expense.date.split("/");
+      let month:number = parseInt(date[0]);
+      let day:number = parseInt(date[1]);
+      let year:number = parseInt(date[2]);
+      console.log("Month: ", month);
+      if(year===current_year && month===current_month && day<=current_day){
+        total+=expense.amount;
+      }
+    });
+    console.log("Expenses: ", total); 
+    return total;
+  };
+  
   const addSalaryToDB = (newSalaryList:any) => {
     db.set("salaries",newSalaryList);
     setTrigger(!trigger);
@@ -97,7 +141,15 @@ const SalaryTab: React.FC = () => {
         </IonHeader>
 
         <div className="main-app">
-
+          <IonItem lines="none">
+            <IonText id="balance" color={balance <0 ? "danger": "secondary"}> 
+              {
+                balance==-1 ? 
+                "": 
+                `Current balance: ${balance} ${currency}`
+              } 
+            </IonText>
+          </IonItem>
           <IonItem>
             <IonLabel position="stacked" className="labels">Amount</IonLabel>
             <IonInput id="amount" mode="ios" type="number" placeholder="Amount..." onIonChange={e => setAmount(parseFloat(e.detail.value!))} required></IonInput>

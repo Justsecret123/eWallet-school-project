@@ -28,3 +28,22 @@ ion-segment ion-segment-button ion-label {
     top: 0.0625%!important;
     left: 5%;
 }
+
+ion-item #balance {
+    font-size: 20px!important;
+}
+
+@media(max-width:812px){
+    ion-item #balance {
+        position: relative;
+        left: 18%;
+    }
+}
+
+@media(min-width:813px){
+    ion-item #balance {
+        position: relative;
+        left: 40%;
+    }  
+}
+

@@ -13,7 +13,6 @@ const monthNames:any = {
     "11": "Dec"
 };
 
-
 const monthColors:any = {
     "0": "#3dc2ff",
     "1": "#2dd36f", 
