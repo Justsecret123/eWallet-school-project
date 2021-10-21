@@ -62,9 +62,10 @@ const ExpensesTab: React.FC = () => {
     let current_day:number = today.getDate();
     let current_year:number = today.getFullYear();
     salaries.map((salary:any)=>{
-      let month:number = parseInt(salary.date.split("/")[0]);
-      let day:number = parseInt(salary.date.split("/")[1]);
-      let year:number = parseInt(salary.date.split("/")[2]);
+      let date:any = salary.date.split("/");
+      let month:number = parseInt(date[0]);
+      let day:number = parseInt(date[1]);
+      let year:number = parseInt(date[2]);
       if(year===current_year && month===current_month && day<=current_day){
         total+=salary.salary;
       }
