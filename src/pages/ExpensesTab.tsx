@@ -92,15 +92,6 @@ const ExpensesTab: React.FC = () => {
     return total;
   };
 
-  const getExpenseListFromDB = async() => {
-    const val = await db.get("expenses");
-    if(val!==null){
-      setExpenseList(val);
-    }else{
-      setExpenseList([]);
-    }
-  }
-
   const addExpenseToDB = (newExpenseList:any) => {
     db.set("expenses",newExpenseList);
     setTrigger(!trigger);

@@ -20,6 +20,7 @@ const ByPeriodTab: React.FC = () => {
   
   const [expenseList, setExpenseList] = useState<any>([0]);
   const [monthCharts, setMonthCharts] = useState<any>([]);
+  const [salaryMonthCharts, setSalaryMonthCharts] = useState<any>([]);
   const [trigger, setTrigger] = useState<boolean>(true);
 
   var routerHistory:any = useHistory();
@@ -36,10 +37,13 @@ const ByPeriodTab: React.FC = () => {
 
   const getExpenseListFromDB = async() => {
     
-    const val:any = await db.get("expenses");
-    if(val!==null){
-      setExpenseList(val);
-      getTotalExpensesByMonth(val);
+    const expenses:any = await db.get("expenses");
+    const salaries = await db.get("salaries");
+
+    if(expenses!==null && salaries!==null){
+      setExpenseList(expenses);
+      getTotalExpensesByMonth(expenses);
+      getTotalSalaryByMonth(salaries);
     }else{
       setExpenseList([]);
     }
@@ -58,6 +62,19 @@ const ByPeriodTab: React.FC = () => {
     }
     setMonthCharts(data.slice(0,13));
     setExpenseList(expenses);
+  }
+
+  const getTotalSalaryByMonth = (salaries:any) => {
+    let newTotals:any = {"0":0, "1":0, "2":0, "3":0, "4":0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0};
+    salaries.map((salary:any)=>{
+      let month:any = salary.date.split("/")[0];
+      newTotals[month-1] += salary.salary;
+    });
+    let data:any = [["Month","Amount", {role: "style"}, {role: "annotation"}]];
+    for (const [key, value] of Object.entries(newTotals)) {
+      data.push([monthNames[key],value, monthColors[key], value]);
+    }
+    setSalaryMonthCharts(data.slice(0,13));
   }
 
   const redirectToCategory = () => {
@@ -86,7 +103,7 @@ const ByPeriodTab: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <div className="main-app">
-          <h1> Stats by month  </h1>
+          <h1> Expenses by month  </h1>
             <Chart
               width={"100%"}
               height={250}
@@ -94,6 +111,15 @@ const ByPeriodTab: React.FC = () => {
               loader={<div>Loading Chart</div>}
               data = {monthCharts}
               options = {monthOptions}
+            />
+            <h1> Salary by month </h1>
+            <Chart 
+                width={"100%"}
+                height={250}
+                chartType="LineChart"
+                loader={<div>Loading Chart</div>}
+                data = {salaryMonthCharts}
+                options = {monthOptions}
             />
         </div>
       </IonContent>
