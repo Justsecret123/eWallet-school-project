@@ -18,7 +18,7 @@ const today = new Date();
 const SalaryTab: React.FC = () => {
 
   const [salaryList, setSalaryList] = useState<any>([]);  
-  const [balance, setBalance] = useState<number>(-1);
+  const [balance, setBalance] = useState<number>(Infinity);
   const [currency, setCurrency] = useState<string>("");
 
   const [amount, setAmount] = useState<number>(0);
@@ -81,7 +81,6 @@ const SalaryTab: React.FC = () => {
       let month:number = parseInt(date[0]);
       let day:number = parseInt(date[1]);
       let year:number = parseInt(date[2]);
-      console.log("Month: ", month);
       if(year===current_year && month===current_month && day<=current_day){
         total+=expense.amount;
       }
@@ -144,7 +143,7 @@ const SalaryTab: React.FC = () => {
           <IonItem lines="none">
             <IonText id="balance" color={balance <0 ? "danger": "secondary"}> 
               {
-                balance==-1 ? 
+                balance===Infinity ? 
                 "": 
                 `Current balance: ${balance} ${currency}`
               } 
