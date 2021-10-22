@@ -45,13 +45,24 @@ const ExpensesTab: React.FC = () => {
     const expenses = await db.get("expenses");
     const salaries = await db.get("salaries");
     const current_currency = await db.get("currency");
-    if(expenses!==null && salaries!==null){
-      setExpenseList(salaries);
-      let cmSalaries = getCurrentMonthSalaries(salaries);
-      let cmExpenses = getCurrentMonthExpenses(expenses);
-      console.log("Balance: ", cmSalaries-cmExpenses);
-      setBalance(cmSalaries-cmExpenses);
+    if(expenses!==null){
+      setExpenseList(expenses);
       setCurrency(current_currency==null ? "":current_currency);
+      let cmExpenses = getCurrentMonthExpenses(expenses);
+      if(salaries!==null){
+        let cmSalaries = getCurrentMonthSalaries(salaries);
+        console.log("Balance: ", cmSalaries-cmExpenses);
+        setBalance(cmSalaries-cmExpenses);
+      }else{
+        console.log("Balance: ", -cmExpenses);
+        setBalance(-cmExpenses);
+      }
+    }else{
+      if(salaries!==null){
+        let cmSalaries = getCurrentMonthSalaries(salaries);
+        console.log("Balance: ", balance);
+        setBalance(cmSalaries);   
+      }
     }
     
   }

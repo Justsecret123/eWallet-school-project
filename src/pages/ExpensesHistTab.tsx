@@ -30,8 +30,9 @@ const ExpensesHistTab: React.FC = () => {
   const getExpenseListFromDB = async() => {
     const val = await db.get("expenses");
     if(val!==null){
-        setExpenseList(val);
-        setUpdates(val);
+      console.log(val);
+      setExpenseList(val);
+      setUpdates(val);
     }
   };
 
