@@ -57,6 +57,10 @@ const ByPeriodTab: React.FC = () => {
       }
     }else{
       setExpenseList([]);
+      if(salaries!==null){
+        getTotalSalaryByMonth(salaries);
+        getCurrentYearSalary(salaries);
+      }
     }
 
   };
