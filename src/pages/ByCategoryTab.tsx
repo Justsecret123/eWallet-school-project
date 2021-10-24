@@ -1,4 +1,4 @@
-import { IonCard, IonContent, IonHeader, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
+import { IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonItem, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { Database, Storage } from '@ionic/storage';
 import { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
@@ -6,6 +6,22 @@ import { useHistory } from 'react-router';
 import { categoryColors, categoryOptions } from '../category';
 import './charts.css';
 
+const setColor = (category:string) => {
+  switch(category){
+    case "Food": 
+      return "secondary";
+    case "Bills":
+      return "success"; 
+    case "Housing": 
+      return "primary"; 
+    case "Clothes":
+      return "warning";
+    case "Extra": 
+      return "danger";
+    default: 
+      return "medium";
+    }
+}
 
 const store = new Storage();
 var database:any = null; 
@@ -21,10 +37,13 @@ const ByCategoryTab: React.FC = () => {
   const [db, setDb] = useState<Database | null>(database);
   
   const [expenseList, setExpenseList] = useState<any>([0]);
+  const [currency, setCurrency] = useState<string>("");
   const [categoryCharts, setCategoryCharts] = useState<any>([]);
   const [currentYearCharts, setCurrentYearCharts] = useState<any>([]);
   const [currentMonthCharts, setCurrentMonthCharts] = useState<any>([]);
-  const [bestCategory, setBestCategory] = useState<any>([]);
+  const [bestCategoryAT, setBestCategoryAT] = useState<any>([]);
+  const [bestCategoryCY, setBestCategoryCY] = useState<any>([]);
+  const [bestCategoryCM, setBestCategoryCM] = useState<any>([]);
   const [trigger, setTrigger] = useState<boolean>(true);
 
   const [selectedOption, setSelectedOption] = useState<number>(1);
@@ -32,7 +51,7 @@ const ByCategoryTab: React.FC = () => {
   var routerHistory:any = useHistory();
 
   useIonViewDidEnter(()=>{
-    getExpenseListFromDB();
+    getValuesFromDB();
   });
 
   useEffect(()=>{
@@ -41,17 +60,21 @@ const ByCategoryTab: React.FC = () => {
     }
   },[expenseList]);
 
-  const getExpenseListFromDB = async() => {
+  const getValuesFromDB = async() => {
     
     var expenses:any = await db.get("expenses");
+    var currency:any = await db.get("currency");
     if(expenses!==null){
-        setExpenseList(expenses);
-        getTotalExpensesByCategory(expenses);
-        getCurrentYearStats(expenses);
-        getCurrentMonthStats(expenses);
-      }else{
-        setExpenseList([]);
-      }
+      setExpenseList(expenses);
+      getTotalExpensesByCategory(expenses);
+      getCurrentYearStats(expenses);
+      getCurrentMonthStats(expenses);
+    }else{
+      setExpenseList([]);
+    }
+    if(currency!=null){
+      setCurrency(currency);
+    }
 
   };
 
@@ -78,7 +101,7 @@ const ByCategoryTab: React.FC = () => {
       data.push([key,value, categoryColors[key], value]);
     }
     setCategoryCharts(data);
-    setBestCategory({"category": max_category, "value": max_value});
+    setBestCategoryAT({"category": max_category, "value": max_value}); 
   };
 
   const getCurrentYearStats = (expenses:any) => {
@@ -89,15 +112,20 @@ const ByCategoryTab: React.FC = () => {
       "Clothes":0, 
       "Extra":0
     };
-    let max:number = 0;
+    let max_value:number = 0;
+    let max_category:string = "";
     expenses.map((expense:any)=>{
       let current_year:number = today.getFullYear();
       let category = expense.category;
       let date = expense.date.split("/");
       let year:any = date[2];
+      
       if(year==current_year){
         newTotals[category] += expense.amount;
-        max = expense.amount > max ? expense.amount:max;
+        if(expense.amount>max_value){
+          max_value = expense.amount;
+          max_category = expense.category;
+        }
       }
     }); 
     
@@ -106,6 +134,7 @@ const ByCategoryTab: React.FC = () => {
       data.push([key,value, categoryColors[key], value]);
     }
     setCurrentYearCharts(data);
+    setBestCategoryCY({"category": max_category, "value": max_value});
   }
 
   const getCurrentMonthStats = (expenses:any) => {
@@ -116,7 +145,8 @@ const ByCategoryTab: React.FC = () => {
       "Clothes":0, 
       "Extra":0
     };
-    let max:number = 0;
+    let max_value:number = 0;
+    let max_category:string = "";
     expenses.map((expense:any)=>{
       let current_month:number = today.getMonth()+1;
       let category = expense.category;
@@ -124,7 +154,10 @@ const ByCategoryTab: React.FC = () => {
       let month:any = date[0];
       if(month==current_month){
         newTotals[category] += expense.amount;
-        max = expense.amount > max ? expense.amount:max;
+        if(expense.amount>max_value){
+          max_value = expense.amount;
+          max_category = expense.category;
+        }
       }
     }); 
     
@@ -133,6 +166,8 @@ const ByCategoryTab: React.FC = () => {
       data.push([key,value, categoryColors[key], value]);
     }
     setCurrentMonthCharts(data);
+    setBestCategoryCM({"category": max_category, "value": max_value});
+    
   }
 
 
@@ -200,10 +235,45 @@ const ByCategoryTab: React.FC = () => {
               />
           }
           {
-            bestCategory.value !== null ? 
+            bestCategoryAT.value !== null  ? 
             (
-              <IonCard mode="ios">
-
+              <IonCard mode="ios" id="best-category">
+                <IonCardHeader>
+                  <IonCardTitle>
+                     { selectedOption==1 ? 
+                        bestCategoryAT.category: 
+                        selectedOption==0?
+                          bestCategoryCY.category: 
+                          bestCategoryCM.category
+                    } 
+                     <IonBadge color=
+                     {selectedOption==1 ? 
+                        setColor(bestCategoryAT.category): 
+                        selectedOption==0?
+                          setColor(bestCategoryCY.category): 
+                          setColor(bestCategoryCM.category)
+                      }>
+                      {
+                      selectedOption==1 ? 
+                        bestCategoryAT.category: 
+                        selectedOption==0?
+                          bestCategoryCY.category: 
+                          bestCategoryCM.category
+                      }
+                     </IonBadge>
+                  </IonCardTitle>
+                  <IonCardSubtitle>Priciest category</IonCardSubtitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  Total spent:                      
+                  {
+                    selectedOption==1 ? 
+                      " " + bestCategoryAT.value + " " + currency: 
+                      selectedOption==0?
+                      " " +  bestCategoryCY.value + " " + currency :
+                      " " +  bestCategoryCM.value + " " + currency
+                  }
+                </IonCardContent>
               </IonCard>
             )
             :

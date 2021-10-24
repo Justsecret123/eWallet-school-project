@@ -50,4 +50,19 @@ div #select-period {
     width: 100%!important;
 }
 
+#best-category {
+    color: white!important;
+}
+
+
+@media(max-width: 812px){
+    #best-category {
+        width: 80%!important;
+        position: relative!important;
+        left: 5%!important;
+    }
+}
+
+
+
 
