@@ -21,7 +21,8 @@ const ByPeriodTab: React.FC = () => {
   const [db, setDb] = useState<Database | null>(database);
   
   const [expenseList, setExpenseList] = useState<any>([0]);
-  const [monthCharts, setMonthCharts] = useState<any>([]);
+  const [expenseMonthCharts, setExpenseMonthCharts] = useState<any>([]);
+  const [expenseCurrentYearCharts, setExpenseCurrentYearCharts] = useState<any>([]);
   const [salaryMonthCharts, setSalaryMonthCharts] = useState<any>([]);
   const [salaryCurrentYearCharts, setSalaryCurrentYearCharts] = useState<any>([]);
   const [selectedOption, setSelectedOption] = useState<number>(1);
@@ -30,7 +31,7 @@ const ByPeriodTab: React.FC = () => {
   const routerHistory:any = useHistory();
 
   useIonViewDidEnter(()=>{
-    getExpenseListFromDB();
+    getValuesFromDB();
   });
 
   useEffect(()=>{
@@ -40,10 +41,10 @@ const ByPeriodTab: React.FC = () => {
   },[expenseList]);
 
   useEffect(()=>{
-    getExpenseListFromDB();
+    getValuesFromDB();
   },[trigger]);
 
-  const getExpenseListFromDB = async() => {
+  const getValuesFromDB = async() => {
     
     const expenses:any = await db.get("expenses");
     const salaries = await db.get("salaries");
@@ -51,6 +52,7 @@ const ByPeriodTab: React.FC = () => {
     if(expenses!==null){
       setExpenseList(expenses);
       getTotalExpensesByMonth(expenses);
+      getCurrentYearExpenses(expenses);
       if(salaries!=null){
         getTotalSalaryByMonth(salaries);
         getCurrentYearSalary(salaries);
@@ -75,7 +77,7 @@ const ByPeriodTab: React.FC = () => {
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([monthNames[key],value, monthColors[key], value]);
     }
-    setMonthCharts(data.slice(0,13));
+    setExpenseMonthCharts(data.slice(0,13));
     setExpenseList(expenses);
   }
 
@@ -110,6 +112,24 @@ const ByPeriodTab: React.FC = () => {
     setSalaryCurrentYearCharts(data.slice(0,13));   
   }
 
+  const getCurrentYearExpenses = (expenses: any) => {
+    let newTotals:any = {"0":0, "1":0, "2":0, "3":0, "4":0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0};
+    let current_year:number = today.getFullYear();
+    expenses.map((expense:any)=>{
+      let date = expense.date.split("/");
+      let month:any = date[0];
+      let year:any = date[2];
+      if(year==current_year){
+        newTotals[month-1] += expense.amount;
+      }
+    });
+    let data:any = [["Month","Amount", {role: "style"}, {role: "annotation"}]];
+    for (const [key, value] of Object.entries(newTotals)) {
+      data.push([monthNames[key],value, monthColors[key], value]);
+    }      
+    setExpenseCurrentYearCharts(data.slice(0,13));
+  };
+
   const redirectToCategory = () => {
     routerHistory.push("/tab3",{from: "byPeriod"});
   }
@@ -143,14 +163,26 @@ const ByPeriodTab: React.FC = () => {
             </IonSelect>
           </IonItem>
           <h1> Expenses by month  </h1>
+          {
+            selectedOption==1 ? 
             <Chart
               width={"100%"}
               height={250}
               chartType="ColumnChart"
               loader={<div>Loading Chart</div>}
-              data = {monthCharts}
+              data = {expenseMonthCharts}
               options = {monthOptions}
-            />
+            />: 
+            <Chart
+            width={"100%"}
+            height={250}
+            chartType="ColumnChart"
+            loader={<div>Loading Chart</div>}
+            data = {expenseCurrentYearCharts}
+            options = {monthOptions}
+          />           
+          }
+
             <h1> Salary by month </h1>
             {
               selectedOption==1 ? 
