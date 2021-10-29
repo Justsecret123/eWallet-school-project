@@ -1,0 +1,44 @@
+ion-slides {
+    --bullet-background: white!important;
+    height: 100%;
+}
+
+.welcome-app {
+    position: absolute;
+    width: 98%;
+    height: 70%;
+    top: 20%;
+    left: 0%;
+}
+
+.welcome-app ion-item:first-child {
+    position: relative; 
+    bottom: 5%!important;
+}
+
+@media screen and (max-width: 812px){
+    ion-card {
+        width: 95%!important;
+    }
+    .welcome-app {
+        left: 2%!important;
+        height: 70%;
+    }
+    ion-searchbar {
+        width: 92%!important;
+        left: 2%!important;
+    }
+}
+
+@media screen and (min-width: 813px){
+    ion-card {
+        width: 98%!important;
+    }
+    .welcome-app {
+        left: 2%!important;
+    }
+    ion-searchbar {
+        width: 95%!important;
+        left: 2%!important;
+    }
+}

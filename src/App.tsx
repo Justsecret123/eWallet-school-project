@@ -37,14 +37,19 @@ import './theme/variables.css';
 import SalaryHistTab from './pages/SalaryHistTab';
 import ByCategoryTab from './pages/ByCategoryTab';
 import ByPeriodTab from './pages/ByPeriodTab';
+import WelcomeTab from './pages/WelcomeTab';
+
 
 const App: React.FC = () => {
-  
+
   return (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
+          <Route exact path="/welcome">
+            <WelcomeTab/>
+          </Route>
           <Route exact path="/tab1">
             <SalaryTab />
           </Route>
@@ -67,10 +72,14 @@ const App: React.FC = () => {
             <SalaryHistTab/>
           </Route>
           <Route exact path="/">
-            <Redirect to="/tab1" />
+            <Redirect to="/welcome"/>
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom" mode="ios">
+          <IonTabButton tab="welcome" href="/welcome">
+            <IonIcon icon={wallet} />
+            <IonLabel>Welcome</IonLabel>
+          </IonTabButton>
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon icon={wallet} />
             <IonLabel>Salary</IonLabel>
