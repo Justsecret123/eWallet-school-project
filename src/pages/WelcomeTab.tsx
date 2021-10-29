@@ -1,6 +1,6 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSlides, IonSlide, IonItem, IonText, IonIcon, useIonViewDidEnter, IonCard, IonCardContent, IonCardTitle, IonGrid, IonRow, IonCol, IonLabel, IonList, IonAvatar, IonCardSubtitle, IonCardHeader } from "@ionic/react";
 import { Storage, Database } from "@ionic/storage";
-import { accessibility, barChart, lockClosed, wallet, walletOutline } from "ionicons/icons";
+import { accessibility, barChart, cash, lockClosed, person, settingsSharp } from "ionicons/icons";
 import { useState } from "react";
 import './welcome.css';
 
@@ -49,7 +49,7 @@ const WelcomeTab: React.FC = () => {
                                 <IonGrid style={{"left": "5%!important"}}>
                                     <IonRow style={{"left": "5%!important"}}>
                                         <IonText>
-                                            <h1> Hi, {username===""? "User": username} ! </h1>
+                                            <h1> Hi, {username===""? "User": username} ! <IonIcon icon={accessibility}></IonIcon></h1>
                                         </IonText>
                                     </IonRow>
                                     <IonRow>
@@ -93,7 +93,44 @@ const WelcomeTab: React.FC = () => {
                             </IonItem>
                         </IonSlide>
                         <IonSlide>
-                            <h1>Slide 2</h1>
+                            <IonItem lines="none">
+                                <IonGrid style={{"left": "5%!important"}}>
+                                    <IonRow style={{"left": "5%!important"}}>
+                                        <IonText>
+                                            <h1> Customizable options  <IonIcon icon={settingsSharp}></IonIcon> </h1>
+                                        </IonText>
+                                    </IonRow>
+                                    <IonRow>
+                                        <IonCard mode="ios">
+                                            <IonCardHeader>
+                                                <IonCardTitle>E-wallet</IonCardTitle>
+                                                <IonCardSubtitle> Tips</IonCardSubtitle>
+                                            </IonCardHeader>
+                                            <IonCardContent>With the first version, you can configure the displayed currency and username. A secure password and a category color configuration are coming soon. </IonCardContent>
+                                        </IonCard>
+                                    </IonRow>
+                                    <IonRow>
+                                        <IonList>
+                                            <IonItem>
+                                                <IonAvatar slot="start">
+                                                    <IonIcon icon={person}></IonIcon>
+                                                </IonAvatar>
+                                                <IonLabel>
+                                                    <h2> Username </h2>
+                                                </IonLabel>
+                                            </IonItem>
+                                            <IonItem>
+                                                <IonAvatar slot="start">
+                                                    <IonIcon icon={cash}></IonIcon>
+                                                </IonAvatar>
+                                                <IonLabel>
+                                                    <h2> Displayed currency </h2>
+                                                </IonLabel>
+                                            </IonItem>
+                                        </IonList>
+                                    </IonRow>
+                                </IonGrid>
+                            </IonItem>
                         </IonSlide>
                         <IonSlide>
                             <h1>Slide 3</h1>

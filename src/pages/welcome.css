@@ -16,6 +16,11 @@ ion-slides {
     bottom: 5%!important;
 }
 
+ion-avatar {
+    position: relative!important;
+    top: 10px!important;
+}
+
 @media screen and (max-width: 812px){
     ion-card {
         width: 95%!important;
