@@ -11,9 +11,6 @@ ion-badge {
 }
 
 @media screen and (max-width: 812px){
-    ion-card {
-        width: 95%!important;
-    }
     .main-app {
         left: 2%!important;
     }

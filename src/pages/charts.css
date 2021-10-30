@@ -33,6 +33,11 @@ ion-title {
     .main-app h1 {
         left: 40%;
     }
+    #best-category {
+        width: 80%!important;
+        position: relative!important;
+        left: 5%!important;
+    }
 }
 
 .main-app h1 {
@@ -46,16 +51,3 @@ div #select-period {
 #best-category {
     color: white!important;
 }
-
-
-@media(max-width: 812px){
-    #best-category {
-        width: 80%!important;
-        position: relative!important;
-        left: 5%!important;
-    }
-}
-
-
-
-

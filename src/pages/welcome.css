@@ -29,10 +29,6 @@ ion-avatar {
         left: 2%!important;
         height: 70%;
     }
-    ion-searchbar {
-        width: 92%!important;
-        left: 2%!important;
-    }
 }
 
 @media screen and (min-width: 813px){
