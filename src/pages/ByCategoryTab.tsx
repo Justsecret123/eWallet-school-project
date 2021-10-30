@@ -71,7 +71,6 @@ const ByCategoryTab: React.FC = () => {
       getTotalExpensesByCategory(expenses);
       getCurrentYearStats(expenses);
       getCurrentMonthStats(expenses);
-      console.log("Selected option: ", selectedOption);
     }else{
       setExpenseList([]);
     }
