@@ -3,7 +3,11 @@
     width: 98%;
     height: inherit;
     top: 0.0625%!important;
-    left: 0%;
+    left: 2%!important;
+}
+
+ion-searchbar {
+    left: 2%!important;
 }
 
 ion-badge {
@@ -11,12 +15,8 @@ ion-badge {
 }
 
 @media screen and (max-width: 812px){
-    .main-app {
-        left: 2%!important;
-    }
     ion-searchbar {
         width: 92%!important;
-        left: 2%!important;
     }
 }
 
@@ -24,16 +24,10 @@ ion-badge {
     ion-card {
         width: 98%!important;
     }
-    .main-app {
-        left: 2%!important;
-    }
     ion-searchbar {
         width: 95%!important;
-        left: 2%!important;
     }
 }
-
-
 
 ion-segment, ion-segment * {
     color-scheme: dark!important;
@@ -44,4 +38,3 @@ ion-item {
     opacity:1;
     --padding-start: none!important;
 }
-

@@ -37,14 +37,6 @@ ion-card-content ion-label {
     color: white!important;
 }
 
-ion-item {
-    pointer-events: initial !important;
-}
-
-ion-item-sliding {
-    pointer-events: initial !important;
-}
-
 ion-item-sliding {
     width: 100%!important;
 }
