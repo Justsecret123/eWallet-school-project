@@ -1,11 +1,10 @@
 .main-app {
-    position: absolute;
+    position: relative!important;
     width: 98%;
     height: inherit;
-    top: 20%;
+    top: 0.0625%!important;
     left: 0%;
 }
-
 
 ion-badge {
     margin-left: 15px!important;
