@@ -41,9 +41,15 @@ ion-avatar {
     }
     .welcome-app {
         left: 2%!important;
+        height: 73%;
     }
     ion-searchbar {
         width: 95%!important;
         left: 2%!important;
     }
+
+    ion-list ion-item {
+        width: 100%!important;
+    }
+
 }

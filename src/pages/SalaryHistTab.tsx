@@ -64,7 +64,7 @@ const SalaryHistTab: React.FC = () => {
     
     const redirectToAdd = () => {
         setTrigger(!trigger);
-        routerHistory.push("/tab1",{from: "salaryHist"});
+        routerHistory.push("/tab1");
     }
 
     const getSalaryHistFromDB = async() => {
@@ -109,7 +109,6 @@ const SalaryHistTab: React.FC = () => {
         }
     }
     
-
     return(
         <IonPage>
         <IonHeader>

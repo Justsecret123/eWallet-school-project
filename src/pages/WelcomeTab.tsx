@@ -1,7 +1,8 @@
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSlides, IonSlide, IonItem, IonText, IonIcon, useIonViewDidEnter, IonCard, IonCardContent, IonCardTitle, IonGrid, IonRow, IonCol, IonLabel, IonList, IonAvatar, IonCardSubtitle, IonCardHeader } from "@ionic/react";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSlides, IonSlide, IonItem, IonText, IonIcon, useIonViewDidEnter, IonCard, IonCardContent, IonCardTitle, IonGrid, IonRow, IonLabel, IonList, IonAvatar, IonCardSubtitle, IonCardHeader } from "@ionic/react";
 import { Storage, Database } from "@ionic/storage";
-import { accessibility, barChart, cash, lockClosed, person, settingsSharp } from "ionicons/icons";
+import { accessibility, arrowForward, barChart, card, cash, lockClosed, person, rocket, settingsSharp } from "ionicons/icons";
 import { useState } from "react";
+import { useHistory } from "react-router";
 import './welcome.css';
 
 const store = new Storage();
@@ -17,6 +18,8 @@ const WelcomeTab: React.FC = () => {
 
     const [db, setDb] = useState<Database | null>(database);
     const [username, setUsername] = useState<string>("");
+    
+    var history = useHistory();
 
     useIonViewDidEnter(()=>{
         getUser();
@@ -27,6 +30,22 @@ const WelcomeTab: React.FC = () => {
         if(val!==null){
             setUsername(val);
         }
+    }
+
+    const redirectToCharts = () => {
+        history.push("/tab3");
+    }
+
+    const redirectToSalary = () => {
+        history.push("/tab1");
+    }
+
+    const redirectToExpenses = () => {
+        history.push("/tab2");
+    }
+
+    const redirectToSettings = () => {
+        history.push("/tab4");
     }
 
     return (
@@ -44,7 +63,7 @@ const WelcomeTab: React.FC = () => {
                 </IonHeader>
                 <div className="welcome-app">
                     <IonSlides mode="ios" pager={true}>
-                        <IonSlide id="slide1">
+                        <IonSlide>
                             <IonItem lines="none">
                                 <IonGrid style={{"left": "5%!important"}}>
                                     <IonRow style={{"left": "5%!important"}}>
@@ -63,7 +82,7 @@ const WelcomeTab: React.FC = () => {
                                     </IonRow>
                                     <IonRow>
                                         <IonList>
-                                            <IonItem>
+                                            <IonItem mode="ios">
                                                 <IonAvatar slot="start">
                                                     <IonIcon icon={barChart}></IonIcon>
                                                 </IonAvatar>
@@ -71,7 +90,7 @@ const WelcomeTab: React.FC = () => {
                                                     <h2> Interactive visualizations</h2>
                                                 </IonLabel>
                                             </IonItem>
-                                            <IonItem>
+                                            <IonItem mode="ios">
                                                 <IonAvatar slot="start">
                                                     <IonIcon icon={accessibility}></IonIcon>
                                                 </IonAvatar>
@@ -79,7 +98,7 @@ const WelcomeTab: React.FC = () => {
                                                     <h2> Friendly UI</h2>
                                                 </IonLabel>
                                             </IonItem>
-                                            <IonItem>
+                                            <IonItem mode="ios">
                                                 <IonAvatar slot="start">
                                                     <IonIcon icon={lockClosed}></IonIcon>
                                                 </IonAvatar>
@@ -93,7 +112,7 @@ const WelcomeTab: React.FC = () => {
                             </IonItem>
                         </IonSlide>
                         <IonSlide>
-                            <IonItem lines="none">
+                            <IonItem mode="ios" lines="none">
                                 <IonGrid style={{"left": "5%!important"}}>
                                     <IonRow style={{"left": "5%!important"}}>
                                         <IonText>
@@ -111,7 +130,7 @@ const WelcomeTab: React.FC = () => {
                                     </IonRow>
                                     <IonRow>
                                         <IonList>
-                                            <IonItem>
+                                            <IonItem mode="ios">
                                                 <IonAvatar slot="start">
                                                     <IonIcon icon={person}></IonIcon>
                                                 </IonAvatar>
@@ -119,7 +138,7 @@ const WelcomeTab: React.FC = () => {
                                                     <h2> Username </h2>
                                                 </IonLabel>
                                             </IonItem>
-                                            <IonItem>
+                                            <IonItem mode="ios">
                                                 <IonAvatar slot="start">
                                                     <IonIcon icon={cash}></IonIcon>
                                                 </IonAvatar>
@@ -133,7 +152,60 @@ const WelcomeTab: React.FC = () => {
                             </IonItem>
                         </IonSlide>
                         <IonSlide>
-                            <h1>Slide 3</h1>
+                            <IonItem mode="ios" lines="none">
+                                <IonGrid style={{"left": "5%!important"}}>
+                                    <IonRow style={{"left": "5%!important"}}>
+                                        <IonText>
+                                            <h1> Now, let's get started ! <IonIcon icon={rocket}></IonIcon></h1>
+                                        </IonText>
+                                    </IonRow>
+                                    <IonRow>
+                                        <IonCard mode="ios">
+                                            <IonCardHeader>
+                                                <IonCardTitle>E-wallet</IonCardTitle>
+                                                <IonCardSubtitle> Welcome </IonCardSubtitle>
+                                            </IonCardHeader>
+                                            <IonCardContent>We wish you a wonderful experience :-)</IonCardContent>
+                                        </IonCard>
+                                    </IonRow>
+                                    <IonRow>
+                                        <IonList>
+                                            <IonItem mode="ios" onClick={()=>redirectToSettings()}>
+                                                <IonAvatar slot="start">
+                                                    <IonIcon icon={settingsSharp}></IonIcon>
+                                                </IonAvatar>
+                                                <IonLabel>
+                                                    <h2> Setup your preferences <IonIcon icon={arrowForward} style={{"position":"relative", "top":"5px"}}/> </h2>
+                                                </IonLabel>
+                                            </IonItem>
+                                            <IonItem mode="ios" onClick={()=>redirectToSalary()}>
+                                                <IonAvatar slot="start">
+                                                    <IonIcon icon={card}></IonIcon>
+                                                </IonAvatar>
+                                                <IonLabel>
+                                                    <h2> Manage your income <IonIcon icon={arrowForward} style={{"position":"relative", "top":"5px"}}/> </h2>
+                                                </IonLabel>
+                                            </IonItem>
+                                            <IonItem mode="ios" onClick={()=>redirectToExpenses()}>
+                                                <IonAvatar slot="start">
+                                                    <IonIcon icon={cash}></IonIcon>
+                                                </IonAvatar>
+                                                <IonLabel>
+                                                    <h2> Manage your expenses <IonIcon icon={arrowForward} style={{"position":"relative", "top":"5px"}}/> </h2>
+                                                </IonLabel>
+                                            </IonItem>
+                                            <IonItem mode="ios" onClick={()=>redirectToCharts()}>
+                                                <IonAvatar slot="start">
+                                                    <IonIcon icon={barChart}></IonIcon>
+                                                </IonAvatar>
+                                                <IonLabel>
+                                                    <h2> Visualize your trends <IonIcon icon={arrowForward} style={{"position":"relative", "top":"5px"}}/>  </h2>
+                                                </IonLabel>
+                                            </IonItem>
+                                        </IonList>
+                                    </IonRow>
+                                </IonGrid>
+                            </IonItem>
                         </IonSlide>
                     </IonSlides>
                 </div>

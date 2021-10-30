@@ -123,7 +123,7 @@ const SalaryTab: React.FC = () => {
   }
 
   const redirectToHistory = () => {
-    routerHistory.push("/salaryHist",{from: "salary"});
+    routerHistory.push("/salaryHist");
   }
 
   return (

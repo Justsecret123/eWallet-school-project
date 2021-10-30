@@ -1,9 +1,9 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
 import {checkmarkCircle} from "ionicons/icons";
-import "./settings.css";
 import { currency_list } from "../currencies";
 import { useEffect, useState } from "react";
 import { Database, Storage } from "@ionic/storage";
+import "./settings.css";
 
 const currencies = currency_list;
 const store = new Storage();

@@ -38,6 +38,7 @@ const ByCategoryTab: React.FC = () => {
   
   const [expenseList, setExpenseList] = useState<any>([0]);
   const [currency, setCurrency] = useState<string>("");
+  const [years, setYears] = useState<any>([]);
   const [categoryCharts, setCategoryCharts] = useState<any>([]);
   const [currentYearCharts, setCurrentYearCharts] = useState<any>([]);
   const [currentMonthCharts, setCurrentMonthCharts] = useState<any>([]);
@@ -86,10 +87,13 @@ const ByCategoryTab: React.FC = () => {
       "Clothes":0, 
       "Extra":0
     };
+    const newYears:Set<number> = new Set();
     let max_value:number = 0;
     let max_category:string = "";
     expenses.map((expense:any)=>{
       let category = expense.category;
+      let year:any = expense.date.split('/')[2];
+      newYears.add(year);
       newTotals[category] += expense.amount;
       if(expense.amount>max_value){
         max_value = expense.amount;
@@ -102,6 +106,7 @@ const ByCategoryTab: React.FC = () => {
     }
     setCategoryCharts(data);
     setBestCategoryAT({"category": max_category, "value": max_value}); 
+    setYears(Array.from(newYears));  
   };
 
   const getCurrentYearStats = (expenses:any) => {
@@ -173,7 +178,7 @@ const ByCategoryTab: React.FC = () => {
 
 
   const redirectToPeriod = () => {
-    routerHistory.push("/tab5",{from: "byCategory"});
+    routerHistory.push("/tab5");
   }
 
   return (
@@ -203,6 +208,11 @@ const ByCategoryTab: React.FC = () => {
               <IonSelectOption value={1}>All-time</IonSelectOption>
               <IonSelectOption value={0}>Current year </IonSelectOption>
               <IonSelectOption value={2}>Current month </IonSelectOption>
+              {
+                years.reverse().map((year:any, index:any)=> (
+                  <IonSelectOption key={index} value={year}> {year} </IonSelectOption>
+                ))
+              }
             </IonSelect>
           </IonItem>
           <h1>Expenses by category</h1>

@@ -6,7 +6,6 @@ import { useHistory } from 'react-router';
 import { checkmarkCircle, closeCircle, create, trash } from 'ionicons/icons';
 import './expensesHist.css';
 
-
 const store = new Storage(); 
 
 var database:any = null;
@@ -30,7 +29,6 @@ const ExpensesHistTab: React.FC = () => {
   const getExpenseListFromDB = async() => {
     const val = await db.get("expenses");
     if(val!==null){
-      console.log(val);
       setExpenseList(val);
       setUpdates(val);
     }
@@ -55,7 +53,7 @@ const ExpensesHistTab: React.FC = () => {
 
     
   const redirectToAdd = () => {
-      routerHistory.push("/tab2", {from: "expensesHist"});
+      routerHistory.push("/tab2");
   }
 
   const removeExpense = (idx:number) => {

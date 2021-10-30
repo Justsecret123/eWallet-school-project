@@ -23,6 +23,7 @@ const ByPeriodTab: React.FC = () => {
   const [expenseList, setExpenseList] = useState<any>([0]);
   const [expenseMonthCharts, setExpenseMonthCharts] = useState<any>([]);
   const [expenseCurrentYearCharts, setExpenseCurrentYearCharts] = useState<any>([]);
+  const [years, setYears] = useState<any>([]);
   const [salaryMonthCharts, setSalaryMonthCharts] = useState<any>([]);
   const [salaryCurrentYearCharts, setSalaryCurrentYearCharts] = useState<any>([]);
   const [selectedOption, setSelectedOption] = useState<number>(1);
@@ -97,10 +98,12 @@ const ByPeriodTab: React.FC = () => {
   const getCurrentYearSalary = (salaries:any) => {
     let newTotals:any = {"0":0, "1":0, "2":0, "3":0, "4":0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0};
     let current_year:number = today.getFullYear();
+    const newYears:Set<number> = new Set();
     salaries.map((salary:any)=>{
       let date = salary.date.split("/");
       let month:any = date[0];
       let year:any = date[2];
+      newYears.add(year);
       if(year==current_year){
         newTotals[month-1] += salary.salary;
       }
@@ -109,16 +112,19 @@ const ByPeriodTab: React.FC = () => {
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([monthNames[key],value, monthColors[key], value]);
     }
-    setSalaryCurrentYearCharts(data.slice(0,13));   
+    setSalaryCurrentYearCharts(data.slice(0,13)); 
+    setYears(Array.from(newYears));  
   }
 
   const getCurrentYearExpenses = (expenses: any) => {
     let newTotals:any = {"0":0, "1":0, "2":0, "3":0, "4":0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0};
     let current_year:number = today.getFullYear();
+    const newYears:Set<number> = new Set();
     expenses.map((expense:any)=>{
       let date = expense.date.split("/");
       let month:any = date[0];
       let year:any = date[2];
+      newYears.add(year);
       if(year==current_year){
         newTotals[month-1] += expense.amount;
       }
@@ -128,10 +134,12 @@ const ByPeriodTab: React.FC = () => {
       data.push([monthNames[key],value, monthColors[key], value]);
     }      
     setExpenseCurrentYearCharts(data.slice(0,13));
+    setYears(Array.from(newYears));
+
   };
 
   const redirectToCategory = () => {
-    routerHistory.push("/tab3",{from: "byPeriod"});
+    routerHistory.push("/tab3");
   }
 
   return (
@@ -160,6 +168,11 @@ const ByPeriodTab: React.FC = () => {
             <IonSelect placeholder={"Select period..."} mode="ios" onIonChange={e=>{setSelectedOption(e.detail.value); setTrigger(!trigger);}}>
               <IonSelectOption value={1}>All-time</IonSelectOption>
               <IonSelectOption value={0}>Current year </IonSelectOption>
+              {
+                years.reverse().map((year:any, index:any)=> (
+                  <IonSelectOption key={index} value={year}> {year} </IonSelectOption>
+                ))
+              }
             </IonSelect>
           </IonItem>
           <h1> Expenses by month  </h1>
