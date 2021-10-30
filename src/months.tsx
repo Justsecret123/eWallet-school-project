@@ -35,7 +35,7 @@ const monthOptions:any = {
     },
     hAxis: {
       slantedText:true,
-      slantedTextAngle:33,
+      slantedTextAngle:35,
       title: "Month", 
       titleTextStyle: {
         color: "white"
