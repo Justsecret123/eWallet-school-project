@@ -56,10 +56,11 @@ const ByCategoryTab: React.FC = () => {
   });
 
   useEffect(()=>{
+    getValuesFromDB();
     if(JSON.stringify(expenseList)!==JSON.stringify([0])){
       setTrigger(false);
     }
-  },[expenseList]);
+  },[trigger, selectedOption]);
 
   const getValuesFromDB = async() => {
     
@@ -70,6 +71,7 @@ const ByCategoryTab: React.FC = () => {
       getTotalExpensesByCategory(expenses);
       getCurrentYearStats(expenses);
       getCurrentMonthStats(expenses);
+      console.log("Selected option: ", selectedOption);
     }else{
       setExpenseList([]);
     }
@@ -95,8 +97,7 @@ const ByCategoryTab: React.FC = () => {
       let year:any = expense.date.split('/')[2];
       newYears.add(year);
       newTotals[category] += expense.amount;
-      if(expense.amount>max_value){
-        max_value = expense.amount;
+      if(newTotals[category] > max_value){
         max_category = expense.category;
       }
     });
@@ -104,6 +105,7 @@ const ByCategoryTab: React.FC = () => {
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([key,value, categoryColors[key], value]);
     }
+    max_value = newTotals[max_category];
     setCategoryCharts(data);
     setBestCategoryAT({"category": max_category, "value": max_value}); 
     setYears(Array.from(newYears));  
@@ -127,13 +129,12 @@ const ByCategoryTab: React.FC = () => {
       
       if(year==current_year){
         newTotals[category] += expense.amount;
-        if(expense.amount>max_value){
-          max_value = expense.amount;
+        if(newTotals[category]>max_value){
           max_category = expense.category;
         }
       }
     }); 
-    
+    max_value = newTotals[max_category];
     let data:any = [["Category","Amount", {role: "style"}, {role: "annotation"}]];
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([key,value, categoryColors[key], value]);
@@ -161,13 +162,12 @@ const ByCategoryTab: React.FC = () => {
       let year:number = date[2];
       if(month==current_month && year==current_year){
         newTotals[category] += expense.amount;
-        if(expense.amount>max_value){
-          max_value = expense.amount;
+        if(newTotals[category]>max_value){
           max_category = expense.category;
         }
       }
     }); 
-    
+    max_value = newTotals[max_category];
     let data:any = [["Category","Amount", {role: "style"}, {role: "annotation"}]];
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([key,value, categoryColors[key], value]);
@@ -176,8 +176,6 @@ const ByCategoryTab: React.FC = () => {
     setBestCategoryCM({"category": max_category, "value": max_value});
     
   }
-
-
 
   const redirectToPeriod = () => {
     routerHistory.push("/tab5");
@@ -206,7 +204,7 @@ const ByCategoryTab: React.FC = () => {
         </IonHeader>
         <div className="main-app">
           <IonItem id="select-period" lines="none">
-            <IonSelect placeholder={"Select period..."} mode="ios" onIonChange={e=>{setSelectedOption(e.detail.value); setTrigger(!trigger);}}>
+            <IonSelect placeholder={"Select period..."} mode="ios" onIonChange={e=>{setSelectedOption(e.detail.value)}}>
               <IonSelectOption value={1}>All-time</IonSelectOption>
               <IonSelectOption value={0}>Current year </IonSelectOption>
               <IonSelectOption value={2}>Current month </IonSelectOption>
