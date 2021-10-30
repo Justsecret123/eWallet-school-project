@@ -13,6 +13,11 @@ store.create().then(function(result){
     database = result;
 });
 
+const slideOpts = {
+    initialSlide: 0,
+    speed: 600
+};
+
 
 const WelcomeTab: React.FC = () => {
 
@@ -62,7 +67,7 @@ const WelcomeTab: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
                 <div className="welcome-app">
-                    <IonSlides mode="ios" pager={true}>
+                    <IonSlides mode="ios" pager={true} options={slideOpts}>
                         <IonSlide>
                             <IonItem lines="none">
                                 <IonGrid style={{"left": "5%!important"}}>
