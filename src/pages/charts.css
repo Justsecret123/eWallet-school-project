@@ -20,16 +20,6 @@ ion-title {
     font-size: 24px!important;
 }
 
-.custom-button {
-    font-family: "Segoe UI"!important;
-    font-weight: 400!important;
-    font-size: 16px!important;
-}
-
-.custom-button ion-icon {
-    padding-left: 5px;
-}
-
 @media (max-width: 812px){
     .main-app h1 {
         left: 18%;

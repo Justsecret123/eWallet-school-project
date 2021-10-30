@@ -123,7 +123,7 @@ const ByCategoryTab: React.FC = () => {
       let current_year:number = today.getFullYear();
       let category = expense.category;
       let date = expense.date.split("/");
-      let year:any = date[2];
+      let year:number = date[2];
       
       if(year==current_year){
         newTotals[category] += expense.amount;
@@ -154,10 +154,12 @@ const ByCategoryTab: React.FC = () => {
     let max_category:string = "";
     expenses.map((expense:any)=>{
       let current_month:number = today.getMonth()+1;
+      let current_year:number = today.getFullYear();
       let category = expense.category;
       let date = expense.date.split("/");
-      let month:any = date[0];
-      if(month==current_month){
+      let month:number = date[0];
+      let year:number = date[2];
+      if(month==current_month && year==current_year){
         newTotals[category] += expense.amount;
         if(expense.amount>max_value){
           max_value = expense.amount;

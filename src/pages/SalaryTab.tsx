@@ -47,16 +47,13 @@ const SalaryTab: React.FC = () => {
       let cmExpenses = getCurrentMonthExpenses(expenses);
       if(salaries!==null){
         let cmSalaries = getCurrentMonthSalaries(salaries);
-        console.log("Balance: ", cmSalaries-cmExpenses);
         setBalance(cmSalaries-cmExpenses);
       }else{
-        console.log("Balance: ", -cmExpenses);
         setBalance(-cmExpenses);
       }
     }else{
       if(salaries!==null){
         let cmSalaries = getCurrentMonthSalaries(salaries);
-        console.log("Balance: ", balance);
         setBalance(cmSalaries);   
       }
     }
@@ -76,7 +73,6 @@ const SalaryTab: React.FC = () => {
         total+=salary.salary;
       }
     });
-    console.log("Salaries: ", total);
     return total;
   };
 
@@ -94,7 +90,6 @@ const SalaryTab: React.FC = () => {
         total+=expense.amount;
       }
     });
-    console.log("Expenses: ", total); 
     return total;
   };
   
