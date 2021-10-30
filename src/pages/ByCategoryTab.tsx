@@ -90,22 +90,26 @@ const ByCategoryTab: React.FC = () => {
       "Extra":0
     };
     const newYears:Set<number> = new Set();
-    let max_value:number = 0;
+    let max_value:any = 0;
     let max_category:string = "";
     expenses.map((expense:any)=>{
       let category = expense.category;
       let year:any = expense.date.split('/')[2];
       newYears.add(year);
       newTotals[category] += expense.amount;
-      if(newTotals[category] > max_value){
-        max_category = expense.category;
-      }
     });
+
+    const values:any = Object.values(newTotals);
+    const categories:any = Object.keys(newTotals);
+    const index:any = values.indexOf(Math.max(...values));
+    max_value = values[index];
+    max_category = categories[index];
+    
+    
     let data:any = [["Category","Amount", {role: "style"}, {role: "annotation"}]];
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([key,value, categoryColors[key], value]);
     }
-    max_value = newTotals[max_category];
     setCategoryCharts(data);
     setBestCategoryAT({"category": max_category, "value": max_value}); 
     setYears(Array.from(newYears));  
@@ -126,15 +130,17 @@ const ByCategoryTab: React.FC = () => {
       let category = expense.category;
       let date = expense.date.split("/");
       let year:number = date[2];
-      
       if(year==current_year){
         newTotals[category] += expense.amount;
-        if(newTotals[category]>max_value){
-          max_category = expense.category;
-        }
       }
     }); 
-    max_value = newTotals[max_category];
+    
+    const values:any = Object.values(newTotals);
+    const categories:any = Object.keys(newTotals);
+    const index:any = values.indexOf(Math.max(...values));
+    max_value = values[index];
+    max_category = categories[index];
+
     let data:any = [["Category","Amount", {role: "style"}, {role: "annotation"}]];
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([key,value, categoryColors[key], value]);
@@ -162,12 +168,19 @@ const ByCategoryTab: React.FC = () => {
       let year:number = date[2];
       if(month==current_month && year==current_year){
         newTotals[category] += expense.amount;
-        if(newTotals[category]>max_value){
+        if(expense.amount>max_value){
+          max_value = expense.amount;
           max_category = expense.category;
         }
       }
     }); 
-    max_value = newTotals[max_category];
+
+    const values:any = Object.values(newTotals);
+    const categories:any = Object.keys(newTotals);
+    const index:any = values.indexOf(Math.max(...values));
+    max_value = values[index];
+    max_category = categories[index];
+    
     let data:any = [["Category","Amount", {role: "style"}, {role: "annotation"}]];
     for (const [key, value] of Object.entries(newTotals)) {
       data.push([key,value, categoryColors[key], value]);
@@ -176,6 +189,8 @@ const ByCategoryTab: React.FC = () => {
     setBestCategoryCM({"category": max_category, "value": max_value});
     
   }
+
+
 
   const redirectToPeriod = () => {
     routerHistory.push("/tab5");
